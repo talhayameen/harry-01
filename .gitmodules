@@ -1,0 +1,3 @@
+[submodule "apm-kubernetes-setup/apm-kubernetes"]
+	path = apm-kubernetes-setup/apm-kubernetes
+	url = https://github.com/talhayameen/java-practice
