@@ -4,7 +4,7 @@ public class Main {
 
     public static void main(String[] args)
     {
-        System.out.println("\n Hi Enjoying Learning Java ? \n");
+        System.out.println("\n\n\n Hi Enjoying Learning Java ? \n");
         
         //Calling AdditionMethod
         // simpleAddition simpleadd = new simpleAddition();
@@ -19,6 +19,13 @@ public class Main {
         //Calling methodOverloading
         // methodOverloading methodoverloading = new methodOverloading();
         // methodoverloading.multiply(34,45);
+
+        //Calling Factorial
+        factorial fact = new factorial();
+        int value = fact.fact(5);
+        System.out.println("Factorial : " +value);
+
+
     
     }
 

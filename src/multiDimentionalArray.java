@@ -25,12 +25,15 @@ public class multiDimentionalArray {
 
 
         //Displaying Arracy
-        for (int i = 0; i<flat.length; i++){
-            for (int j = 0; j<flat[i].length; j++){
+        for (int i = 0; i<flat.length; i++)
+        {
 
+            for (int j = 0; j<flat[i].length; j++)
+            {
             System.out.print(flat[i][j]);
             System.out.print(" ");
             }
+            
             System.out.println("\n");
         }
 
