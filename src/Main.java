@@ -7,14 +7,18 @@ public class Main {
         System.out.println("\n Hi Enjoying Learning Java ? \n");
         
         //Calling AdditionMethod
-        simpleAddition simpleadd = new simpleAddition();
-        simpleadd.inputMethodForAddition();
+        // simpleAddition simpleadd = new simpleAddition();
+        // simpleadd.inputMethodForAddition();
         
         
         //Calling 2-D array
+        // multiDimentionalArray multdim = new multiDimentionalArray();
+        // multdim.workingMultidimentionalArrays();
 
-        // multiDimentionalArray muldim = new multiDimentionalArray();
-        // muldim.workingMultidimentionalArrays();
+
+        //Calling methodOverloading
+        // methodOverloading methodoverloading = new methodOverloading();
+        // methodoverloading.multiply(34,45);
     
     }
 
