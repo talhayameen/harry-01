@@ -25,6 +25,11 @@ public class Main {
         // int value = fact.fact(5);
         // System.out.println("Factorial : " +value);
 
+        //Calling Palindrome
+        palindromeChecker palindromeChecker = new palindromeChecker();
+        Boolean result = palindromeChecker.isPalindrome("talha");
+        System.out.println("Is String Palindrom ? \n\n" +result);
+
 
     
     }

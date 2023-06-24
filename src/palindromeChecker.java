@@ -1,7 +1,7 @@
 public class palindromeChecker {
     
     
-    public static boolean isPalindrome(String input){
+    public boolean isPalindrome(String input){
 
         //taking input
         String cleanedup = input.replaceAll("a-zA-Z0-9", "").toLowerCase();
@@ -29,12 +29,14 @@ public class palindromeChecker {
     for(int i = 0 ; i < length / 2 ; i++)
     {
 
+        if(cleanedup.charAt(i) != cleanedup.charAt(length - 1 - i)){
+            return false;
+        }
+
     }
-
-
-
-
-    }
+    return true;
+    
+ }
 
     
 }
