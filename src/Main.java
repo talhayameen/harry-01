@@ -30,6 +30,7 @@ public class Main {
         Boolean result = palindromeChecker.isPalindrome("level");
         if (result == true)
         {
+            
             System.out.println("Yes ! Its a palindrome \n");
         }
         else{
