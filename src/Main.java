@@ -27,11 +27,15 @@ public class Main {
 
         //Calling Palindrome
         palindromeChecker palindromeChecker = new palindromeChecker();
-        Boolean result = palindromeChecker.isPalindrome("talha");
-        System.out.println("Is String Palindrom ? \n\n" +result);
+        Boolean result = palindromeChecker.isPalindrome("level");
+        if (result == true)
+        {
+            System.out.println("Yes ! Its a palindrome \n");
+        }
+        else{
 
-
-    
+            System.out.println("No ! Its not a palindrome \n");
+        }
     }
 
 
