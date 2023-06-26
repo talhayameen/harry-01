@@ -26,17 +26,30 @@ public class Main {
         // System.out.println("Factorial : " +value);
 
         //Calling Palindrome
-        palindromeChecker palindromeChecker = new palindromeChecker();
-        Boolean result = palindromeChecker.isPalindrome("level");
-        if (result == true)
-        {
+        // palindromeChecker palindromeChecker = new palindromeChecker();
+        // Boolean result = palindromeChecker.isPalindrome("madam");
+        // if (result == true)
+        // {
 
-            System.out.println("Yes ! Its a palindrome \n");
-        }
-        else{
+        //     System.out.println("Yes ! Its a palindrome \n");
+        // }
+        // else{
 
-            System.out.println("No ! Its not a palindrome \n");
-        }
+        //     System.out.println("No ! Its not a palindrome \n");
+        // }
+
+        // nestedPalindrome nestedPalindrome = new nestedPalindrome();
+        // Boolean res = nestedPalindrome.isnestPalindrome("talha");
+        // if (res == true)
+        // {
+
+        //     System.out.println("Yes ! Its a palindrome \n");
+        // }
+        // else{
+
+        //     System.out.println("No ! Its not a palindrome \n");
+        // }
+
     }
 
 
