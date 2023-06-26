@@ -5,6 +5,7 @@ public class palindromeChecker {
 
         //taking input
         String cleanedup = input.replaceAll("a-zA-Z0-9", "").toLowerCase();
+        System.out.println("We have cleaned your entered string");
 
         //get length in a variable of cleaned input
         int length = cleanedup.length();
