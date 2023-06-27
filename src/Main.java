@@ -50,6 +50,26 @@ public class Main {
         //     System.out.println("No ! Its not a palindrome \n");
         // }
 
+    //###############################################################
+    bubbleSort bs = new bubbleSort();
+    int arr[] ={4,2,1,5,3};
+
+    System.out.println("Array Before Bubble Sort");
+    for(int x=0; x < arr.length; x++){
+      System.out.print(arr[x] + " \n");
+    }
+
+    System.out.println();
+    bs.bubbleSortmeth(arr);
+
+    System.out.println("Array After Bubble Sort");
+
+    for(int x=0; x < arr.length; x++){
+      System.out.print(arr[x] + " \n");
+    }
+    //###############################################################
+
+
     }
 
 
