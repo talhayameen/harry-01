@@ -6,10 +6,12 @@ public class bubbleSort {
     for(int x=0; x < n; x++){
      for(int y=1; y < (n-x); y++){
         if(arr[y-1] > arr[y]){
+
         //swap elements
         tmp = arr[y-1];
         arr[y-1] = arr[y];
         arr[y] = tmp;
+        
         }
      }
    }
