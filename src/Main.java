@@ -52,7 +52,7 @@ public class Main {
 
     //###############################################################
     bubbleSort bs = new bubbleSort();
-    int arr[] ={4,2,1,5,3};
+    int arr[] ={4,2,1,7,5,3};
 
     System.out.println("Array Before Bubble Sort");
     for(int x=0; x < arr.length; x++){

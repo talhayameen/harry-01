@@ -1,5 +1,6 @@
 public class bubbleSort {
 
+
     public void bubbleSortmeth(int[] arr) {
     int n = arr.length;
     int tmp = 0;
@@ -10,8 +11,9 @@ public class bubbleSort {
         //swap elements
         tmp = arr[y-1];
         arr[y-1] = arr[y];
-        arr[y] = tmp;
         
+        arr[y] = tmp;
+
         }
      }
    }
