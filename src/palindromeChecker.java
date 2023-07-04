@@ -13,6 +13,7 @@ public class palindromeChecker {
     // loop wise checking both end of the string for palindrome
     // When checking if a string is a palindrome, we iterate 
     // through the characters from both ends and compare them. 
+    
     // The reason we divide the length of the string by 2 is to avoid redundant comparisons.
 
     //Let's consider an example to understand this. Suppose we have the string "racecar". 
