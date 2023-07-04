@@ -19,6 +19,9 @@ public class palindromeChecker {
     //If we compare the characters from both ends without dividing the length by 2, 
     //we would perform the following comparisons:
 
+
+    
+
     // Comparing the first character 'r' with the last character 'r'
     // Comparing the second character 'a' with the second-to-last character 'a'
     // Comparing the third character 'c' with the third-to-last character 'c'
