@@ -35,7 +35,7 @@ public class palindromeChecker {
     //         return false;
     //     }
     // }
-    // return true;
+    return true;
 
     
 
