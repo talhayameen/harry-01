@@ -17,10 +17,10 @@ public class palindromeChecker {
 
     //Let's consider an example to understand this. Suppose we have the string "racecar". 
     //If we compare the characters from both ends without dividing the length by 2, 
-    //we would perform the following comparisons:
+    //we would perform the following comparisons: writting
 
 
-    
+
 
     // Comparing the first character 'r' with the last character 'r'
     // Comparing the second character 'a' with the second-to-last character 'a'
