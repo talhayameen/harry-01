@@ -15,6 +15,7 @@ public class palindromeChecker {
     // through the characters from both ends and compare them. 
     // The reason we divide the length of the string by 2 is to avoid redundant comparisons.
 
+    
     //Let's consider an example to understand this. Suppose we have the string "racecar". 
     //If we compare the characters from both ends without dividing the length by 2, 
     //we would perform the following comparisons:
