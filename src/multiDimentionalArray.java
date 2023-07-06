@@ -35,7 +35,7 @@ public class multiDimentionalArray {
             }
             
             System.out.println("\n");
-            System.out.println("\n");
+
         }
 
 
