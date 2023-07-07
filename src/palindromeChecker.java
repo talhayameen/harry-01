@@ -30,12 +30,12 @@ public class palindromeChecker {
     // By dividing the length of the string by 2, we can ensure that 
     // we only perform comparisons up to the midpoint of the string.
 
-    // for(int i = 0 ; i < length / 2 ; i++)
-    // {
-    //     if(cleanedup.charAt(i) != cleanedup.charAt(length - 1 - i)){
-    //         return false;
-    //     }
-    // }
+    for(int i = 0 ; i < length / 2 ; i++)
+    {
+        if(cleanedup.charAt(i) != cleanedup.charAt(length - 1 - i)){
+            return false;
+        }
+    }
     return true;
 
     
