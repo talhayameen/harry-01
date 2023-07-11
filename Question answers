@@ -11,3 +11,7 @@ ANS: relative path from current dir , while absolute path is full path,
 search a string in a file ?
 
 ANS: grep ,sed , egrep
+
+see permissions of dir and file?
+
+ANS: ll , ls -al , getfacl
