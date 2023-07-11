@@ -4,7 +4,10 @@ what is echo command ?
 
 ANS: Print argument on screen of terminal
 
-diff b/w relative and absolute path
+diff b/w relative and absolute path ?
 
 ANS: relative path from current dir , while absolute path is full path,
 
+search a string in a file ?
+
+ANS: grep ,sed , egrep
