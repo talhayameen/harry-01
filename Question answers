@@ -16,3 +16,7 @@ see permissions of dir and file?
 
 ANS: ll , ls -al , getfacl
 
+difference b/w sudo - and sudo su
+
+ANS: sudo su  doesn't start a subshell with the environment variables of the target user.
+
