@@ -21,3 +21,4 @@ difference b/w sudo - and sudo su
 ANS: sudo su  doesn't start a subshell with the environment variables of the target user. while sudo su - 
 starts subshell 
 
+what is difference between services type k8s"
