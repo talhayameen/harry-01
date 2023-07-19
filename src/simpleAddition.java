@@ -5,7 +5,7 @@ public class simpleAddition {
      public void inputMethodForAddition() {
 
         
-        System.out.println("A basic addition program : " );
+        System.out.println("A basic addition program of two digits: " );
         //Making scanner class object here
         Scanner scan = new Scanner(System.in);
 
