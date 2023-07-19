@@ -23,3 +23,6 @@ starts subshell
 
 what is difference between services type k8s"
 
+ClusterIP: This is the default service type in Kubernetes. It exposes the service on an internal IP address, 
+
+
