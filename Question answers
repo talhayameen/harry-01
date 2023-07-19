@@ -25,4 +25,4 @@ what is difference between services type k8s"
 
 ClusterIP: This is the default service type in Kubernetes. It exposes the service on an internal IP address, 
 NodePort: This service type exposes the service on a static port on each node in the cluster. It creates a mapping between the allocated port on each node and the service. 
-
+LoadBalancer: This service type provisions an external load balancer (such as a cloud provider load balancer) that distributes incoming traffic to the service across multiple nodes. It automatically assigns an external IP address to the service,
