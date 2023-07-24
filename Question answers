@@ -60,3 +60,52 @@ spec:
         periodSeconds: 15
 
 
+Docker basic
+
+Docker is a powerful containerization platform that allows you to create, deploy, and manage applications within lightweight, isolated environments called containers. Containers enable you to package an application and its dependencies into a single unit, ensuring consistent behavior across different environments. To understand how Docker works on a Linux machine at a deeper level, let's go through the key components and processes involved:
+
+Docker Engine:
+
+Docker is based on a client-server architecture. The core of Docker is the Docker Engine, which consists of the Docker daemon (dockerd) and the Docker CLI (docker).
+The Docker daemon is a long-running process responsible for managing containers, images, networks, and volumes.
+The Docker CLI is a command-line tool that interacts with the Docker daemon, allowing users to issue commands to build, run, and manage containers.
+Images:
+
+An image is a lightweight, standalone, and executable software package that includes everything needed to run an application (code, runtime, libraries, environment variables, etc.).
+Images are built from a set of instructions defined in a Dockerfile, which is a plain text configuration file. Dockerfiles specify the application's base image, installation steps, configurations, and other necessary setup.
+Images are stored in a registry (e.g., Docker Hub, private registries), and users can pull images from the registry to their local machine.
+Containers:
+
+A container is an instance of an image. It is a runtime environment that runs the application in an isolated manner, using resources from the host machine's kernel.
+Containers provide process-level isolation, meaning each container runs in its own isolated process space, file system, and network namespace.
+Docker containers are portable and can run on any system that supports Docker, thanks to the containerization technology (Linux namespaces and cgroups) provided by the host OS kernel.
+Dockerfile and Build Process:
+
+The Dockerfile is used to define the steps to create an image. The Docker CLI uses this file to build the image using the docker build command.
+The build process involves taking a base image, executing the instructions in the Dockerfile, and creating an image layer by layer. Each instruction in the Dockerfile adds a new layer to the image, allowing for better caching and reusability.
+Container Lifecycle:
+
+The typical lifecycle of a container involves the following steps:
+Create: Use the docker run command to create a new container from an image. This allocates resources and sets up the container's environment.
+Start: Use the docker start command to start an existing container.
+Stop: Use the docker stop command to stop a running container gracefully.
+Pause: Use the docker pause command to pause a running container (freezing its processes).
+Unpause: Use the docker unpause command to resume a paused container.
+Remove: Use the docker rm command to remove a stopped container.
+Docker Networking:
+
+Docker provides a networking model that allows containers to communicate with each other and with the external world.
+By default, Docker creates a bridge network that allows containers to connect to it and communicate with each other using container names as hostnames.
+Docker also supports host networking and overlay networks for more complex network topologies.
+Docker Volumes:
+
+Volumes in Docker are used to persist data generated or used by containers.
+Docker volumes provide a way to share data between the host and the container or between containers.
+Volumes can be created explicitly using the docker volume command or can be mounted from host directories.
+Docker Compose (Optional):
+
+Docker Compose is a tool used to define and run multi-container applications using a YAML file (docker-compose.yml).
+The docker-compose.yml file allows you to specify the services, networks, volumes, and other configurations required for your application.
+At a deeper level, Docker leverages Linux kernel features such as namespaces, cgroups (control groups), and union file systems to provide container isolation and resource management. Linux namespaces allow Docker to create an isolated environment for each container, including its own process space, network stack, filesystem mounts, etc. Cgroups enable Docker to control and limit the resources (CPU, memory, disk I/O) that containers can use. The union file system (usually overlayfs) is responsible for creating and managing the layered file system of Docker images, providing fast and efficient image building and sharing.
+
+In summary, Docker on a Linux machine works by leveraging Linux kernel features to create isolated containers, each running an application with its own environment and resources. The Docker Engine, Dockerfiles, images, and containers form the core components that enable developers to package and deploy applications consistently across different environments.
