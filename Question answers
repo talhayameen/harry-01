@@ -27,3 +27,8 @@ ClusterIP: This is the default service type in Kubernetes. It exposes the servic
 NodePort: This service type exposes the service on a static port on each node in the cluster. It creates a mapping between the allocated port on each node and the service. 
 LoadBalancer: This service type provisions an external load balancer (such as a cloud provider load balancer) that distributes incoming traffic to the service across multiple nodes. It automatically assigns an external IP address to the service,
 ExternalName: This service type is used when you want to provide a DNS alias to an external service. Instead of exposing an internal service, ExternalName maps the service to a DNS name, 
+
+
+what is redinessprobe and livenessprobe in k8s.
+The readinessProbe is used to check if the container is ready to receive traffic. 
+The livenessProbe is used to check if the container is still running as expected.
