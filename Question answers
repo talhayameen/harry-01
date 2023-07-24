@@ -32,3 +32,31 @@ ExternalName: This service type is used when you want to provide a DNS alias to 
 what is redinessprobe and livenessprobe in k8s.
 The readinessProbe is used to check if the container is ready to receive traffic. 
 The livenessProbe is used to check if the container is still running as expected.
+
+
+can we set  ReadinessProbe and LivenessProbe
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: example-pod
+spec:
+  containers:
+    - name: my-container
+      image: nginx:latest
+      ports:
+        - containerPort: 80
+      readinessProbe:
+        httpGet:
+          path: /some/endpoint
+          port: 80
+        initialDelaySeconds: 15
+        periodSeconds: 10
+      livenessProbe:
+        httpGet:
+          path: /healthz
+          port: 80
+        initialDelaySeconds: 30
+        periodSeconds: 15
+
+
