@@ -124,3 +124,19 @@ A/B Testing: Simultaneously runs multiple versions to compare performance.
 Feature Toggles: Deploys new features that are activated or deactivated dynamically.
 Rolling Back: Reverts to a previous version in case of issues or failures.
 
+Rolling Update: A web application is being updated with a new version. The update is performed by gradually replacing the old containers with the new ones, ensuring that the application remains accessible to users with minimal downtime.
+
+Recreate: A microservice architecture is being updated with a new version of a service. The deployment process involves terminating all instances of the old service and creating new instances with the updated version simultaneously.
+
+Blue-Green Deployment: An e-commerce website is being updated with a new version. The new version is deployed alongside the old version (Blue environment). Once the new version is tested and deemed stable, traffic is switched from the old version to the new one (Green environment).
+
+Canary Deployment: A mobile app is being updated with new features. The new version is first deployed to a small subset of users (e.g., 5% of the user base). The application's performance and user feedback are monitored before rolling out the new version to all users.
+
+Shadow Deployment: A backend service is being updated with a new algorithm for processing data. The new version of the service is deployed alongside the existing one, but all user traffic is still directed to the old version. The new version collects data and performs computations, but the results are discarded (shadow traffic) to compare with the old version's output.
+
+A/B Testing: A social media platform is testing two different layouts for its homepage. The platform simultaneously runs both versions (A and B) for a subset of users. User engagement metrics, such as click-through rates and time spent, are compared to determine which layout performs better.
+
+Feature Toggles: An online shopping application introduces a new payment gateway. The feature is deployed, but it's initially deactivated for all users. The new payment gateway can be dynamically activated for a subset of users to test its functionality and user experience before enabling it for all users.
+
+Rolling Back: An online gaming platform releases an update that introduces a critical bug impacting user experience. The platform quickly reverts to the previous version to maintain service stability while addressing the issue.
+
