@@ -112,10 +112,5 @@ In summary, Docker on a Linux machine works by leveraging Linux kernel features 
 
 
 What Are Software Deployment Models?
-1) Recreate Deployment
-2) Rolling Deployment
-3) Shadow Deployment
-4) Blue/Green Deployment
-5) A/B Testing
-6) Canary Deployment
+
 
