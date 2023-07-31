@@ -113,4 +113,14 @@ In summary, Docker on a Linux machine works by leveraging Linux kernel features 
 
 What Are Software Deployment Models?
 
+Sure! Here are all the deployment strategies defined in one line each:
+
+Rolling Update: Gradually replaces old instances with new ones, ensuring minimal downtime.
+Recreate: Terminates all existing instances and creates new ones simultaneously.
+Blue-Green Deployment: Deploys new version alongside the old one, switches traffic when ready.
+Canary Deployment: Rolls out new version to a subset of users, monitors, then fully deploys.
+Shadow Deployment: Sends traffic to a new version for testing without affecting users.
+A/B Testing: Simultaneously runs multiple versions to compare performance.
+Feature Toggles: Deploys new features that are activated or deactivated dynamically.
+Rolling Back: Reverts to a previous version in case of issues or failures.
 
