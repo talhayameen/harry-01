@@ -115,4 +115,5 @@ What Are Software Deployment Models?
 1) Recreate Deployment
 2) Rolling Deployment
 3) Shadow Deployment
+4) Blue/Green Deployment
 
