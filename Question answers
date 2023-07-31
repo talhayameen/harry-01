@@ -109,3 +109,6 @@ The docker-compose.yml file allows you to specify the services, networks, volume
 At a deeper level, Docker leverages Linux kernel features such as namespaces, cgroups (control groups), and union file systems to provide container isolation and resource management. Linux namespaces allow Docker to create an isolated environment for each container, including its own process space, network stack, filesystem mounts, etc. Cgroups enable Docker to control and limit the resources (CPU, memory, disk I/O) that containers can use. The union file system (usually overlayfs) is responsible for creating and managing the layered file system of Docker images, providing fast and efficient image building and sharing.
 
 In summary, Docker on a Linux machine works by leveraging Linux kernel features to create isolated containers, each running an application with its own environment and resources. The Docker Engine, Dockerfiles, images, and containers form the core components that enable developers to package and deploy applications consistently across different environments.
+
+
+What Are Software Deployment Models?
