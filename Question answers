@@ -138,6 +138,7 @@ A/B Testing: A social media platform is testing two different layouts for its ho
 
 Feature Toggles: An online shopping application introduces a new payment gateway. The feature is deployed, but it's initially deactivated for all users. The new payment gateway can be dynamically activated for a subset of users to test its functionality and user experience before enabling it for all users.
 
+Rolling Back: An online gaming platform releases an update that introduces a critical bug impacting user experience. The platform quickly reverts to the previous version to maintain service stability while addressing the issue.
 
 
 
