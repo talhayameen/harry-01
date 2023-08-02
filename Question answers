@@ -154,3 +154,5 @@ Inheritance: Inheritance is a mechanism where a new class inherits properties an
 Polymorphism: Polymorphism allows objects of different classes to be treated as objects of a common superclass, enabling them to be used interchangeably while responding to method calls specific to their individual types.
 
 These principles form the foundation of Object-Oriented Programming and help in designing modular, organized, and extensible software systems.
+
+
