@@ -13,7 +13,8 @@ public class simpleAddition {
         System.out.println("Enter number one");
         int num1 = scan.nextInt();
 
-
+        System.out.println("Enter number two");
+        int num2 = scan.nextInt();
 
         //Adding 
         System.out.println("Here is the Sum : ");
