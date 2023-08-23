@@ -17,6 +17,7 @@ public class bankApp {
     }
 
     void withdraw(int amount){
+
         if (amount != 0 )
         {
             balance = balance - amount;
@@ -38,7 +39,7 @@ public class bankApp {
         {
             System.out.println("No transaction occured");
         }
-        
+
     }
 
 
