@@ -28,9 +28,20 @@ public class bankApp {
     {
         if(previousTransaction > 0)
         {
-            System.out.println("Deposited : " +previousTransaction);
+            System.out.println(" Deposited : " +previousTransaction);
         }
+        else if(previousTransaction < 0)
+        {
+            System.out.println("withdrawn: " +Math.abs(previousTransaction));
+        }
+        else
+        {
+            System.out.println("No transaction occured");
+        }
+        
     }
+
+
 
     
 }
