@@ -7,6 +7,13 @@ public class bankApp {
     String customerName;
     String customerID;
 
+
+    bankApp(String cname , String cid)
+    {
+        customerName = cname;
+        customerID = cid;
+    }
+
     void deposit(int amount){
         if(amount != 0)
         {
@@ -40,6 +47,12 @@ public class bankApp {
             System.out.println("No transaction occured");
         }
 
+    }
+
+    void showMenu()
+    {
+        char option = '\0';
+        
     }
 
 
