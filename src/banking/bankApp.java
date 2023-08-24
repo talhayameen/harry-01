@@ -81,19 +81,30 @@ public class bankApp {
                     System.out.println("_____________________________");
                     System.out.println("Enter amount to deposit ");
                     System.out.println("_____________________________ \n");
-                    int amount = scanner.nextInt();
-                    deposit(amount);
+                    int depositAmount = scanner.nextInt();
+                    deposit(depositAmount);
                     System.out.println("\n");
                     break;
                 case 'C':                    
                     System.out.println("_____________________________");
-                    System.out.println("Enter amount to deposit ");
+                    System.out.println("Enter amount to Withdraw ");
                     System.out.println("_____________________________ \n");
-
+                    int withdawAmount = scanner.nextInt();
+                    withdraw(withdawAmount);
+                    System.out.println("\n");
                     break;
-
+                case 'D':                    
+                    System.out.println("_____________________________");
+                    getPreviousTransaction();
+                    System.out.println("_____________________________ \n");
+                    break;
+                default:
+                    System.out.println("Invalid option please try Again");
+                    break;
             }
         }
+        while(option != 'E');
+        System.out.println("Thankyou for services");
 
         
 
