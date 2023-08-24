@@ -10,7 +10,7 @@ public class bankApp {
     String customerID;
 
 
-    bankApp(String cname , String cid)
+    public bankApp(String cname , String cid)
     {
         customerName = cname;
         customerID = cid;
@@ -51,7 +51,7 @@ public class bankApp {
 
     }
 
-    void showMenu()
+    public void showMenu()
     {
         char option = '\0';
         Scanner scanner = new Scanner(System.in);
@@ -98,6 +98,11 @@ public class bankApp {
                     getPreviousTransaction();
                     System.out.println("_____________________________ \n");
                     break;
+
+                case 'E':
+                    System.out.println("*****************************************");
+                    break;
+
                 default:
                     System.out.println("Invalid option please try Again");
                     break;

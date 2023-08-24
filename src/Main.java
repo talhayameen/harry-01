@@ -1,3 +1,4 @@
+import banking.bankApp;
 
 public class Main {
 
@@ -5,6 +6,10 @@ public class Main {
     public static void main(String[] args)
     {
         System.out.println("\n\n\nHi Enjoying Learning Java ? \n");
+
+        //Calling BankApp
+        bankApp bankapp = new bankApp("talha", "345");
+        bankapp.showMenu();
         
         //Calling AdditionMethod
         // simpleAddition simpleadd = new simpleAddition();
@@ -51,22 +56,22 @@ public class Main {
         // }
 
     //###############################################################
-    bubbleSort bs = new bubbleSort();
-    int arr[] ={4,2,1,7,5,3};
+    // bubbleSort bs = new bubbleSort();
+    // int arr[] ={4,2,1,7,5,3};
 
-    System.out.println("Array Before Bubble Sort");
-    for(int x=0; x < arr.length; x++){
-      System.out.print(arr[x] + " \n");
-    }
+    // System.out.println("Array Before Bubble Sort");
+    // for(int x=0; x < arr.length; x++){
+    //   System.out.print(arr[x] + " \n");
+    // }
 
-    System.out.println();
-    bs.bubbleSortmeth(arr);
+    // System.out.println();
+    // bs.bubbleSortmeth(arr);
 
-    System.out.println("Array After Bubble Sort");
+    // System.out.println("Array After Bubble Sort");
 
-    for(int x=0; x < arr.length; x++){
-      System.out.print(arr[x] + " \n");
-    }
+    // for(int x=0; x < arr.length; x++){
+    //   System.out.print(arr[x] + " \n");
+    // }
     //###############################################################
 
 
