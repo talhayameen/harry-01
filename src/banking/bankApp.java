@@ -67,9 +67,32 @@ public class bankApp {
         do {
             System.out.println("======================================================================");
             System.out.println("Enter an Option \n");
-            System.out.println("======================================================================");
+            System.out.println("====================================================================== \n");
             option =scanner.next().charAt(0);
 
+            switch(option)
+            {
+                case 'A':
+                    System.out.println("_____________________________");
+                    System.out.println("Balance " +balance);
+                    System.out.println("_____________________________ \n");  
+                    break;
+                case 'B':                    
+                    System.out.println("_____________________________");
+                    System.out.println("Enter amount to deposit ");
+                    System.out.println("_____________________________ \n");
+                    int amount = scanner.nextInt();
+                    deposit(amount);
+                    System.out.println("\n");
+                    break;
+                case 'C':                    
+                    System.out.println("_____________________________");
+                    System.out.println("Enter amount to deposit ");
+                    System.out.println("_____________________________ \n");
+
+                    break;
+
+            }
         }
 
         
