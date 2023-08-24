@@ -35,7 +35,10 @@ public class bankApp {
         {
             System.out.println("withdrawn: " +Math.abs(previousTransaction));
         }
-
+        else
+        {
+            System.out.println("No transaction occured");
+        }
 
     }
 
