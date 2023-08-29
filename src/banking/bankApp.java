@@ -60,8 +60,7 @@ public class bankApp {
         System.out.println("A. Check Balance");
         System.out.println("B. Deposit");
         System.out.println("C. Withdraw");
-        System.out.println("D. PreviousTransaction");
-        System.out.println("E. Exit ");
+
 
         do {
             System.out.println("======================================================================");
