@@ -21,6 +21,8 @@ public class bankApp {
             balance = balance + amount;
             previousTransaction = amount;
         
+        }
+    }
 
     void withdraw(int amount){
 
