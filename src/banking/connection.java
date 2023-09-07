@@ -27,7 +27,7 @@ public class connection {
 
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
-            
+
             // Result set get the result of the SQL query
             resultSet = statement.executeQuery("select * from feedback.comments");
 
@@ -118,6 +118,9 @@ public class connection {
     }
 
     public void getConnection() {
+    }
+
+    public void connectionTest() {
     }
 
 }

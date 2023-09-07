@@ -5,7 +5,8 @@ import java.sql.DriverManager;
 
 public class testCon {
 
-    public static void main(String[] args) {
+    public static void connectionTest() 
+    {
         // Database URL, username, and password
         try {
             // Register the MySQL JDBC driver
