@@ -1,3 +1,4 @@
+import banking.connection;
 import banking.testCon;
 
 public class Main {
@@ -7,12 +8,12 @@ public class Main {
     {
         System.out.println("\n\n\nHi Enjoying Learning Java ? \n");
 
-        //Calling DB Con
+        // Calling DB Con
         // connection con = new connection();        
         // con.readDataBase();
 
-        testCon testCon = new testCon();
-        testCon.connectionTest();
+        // testCon testCon = new testCon();
+        // testCon.connectionTest();
 
 
 
