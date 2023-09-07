@@ -1,4 +1,5 @@
 package banking;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -26,6 +27,7 @@ public class connection {
 
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
+            
             // Result set get the result of the SQL query
             resultSet = statement.executeQuery("select * from feedback.comments");
 
