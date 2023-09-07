@@ -9,8 +9,8 @@ public class Main {
         System.out.println("\n\n\nHi Enjoying Learning Java ? \n");
 
         //Calling DB Con
-        // connection con = new connection();
-        // con.readDataBase();
+        connection con = new connection();
+        con.readDataBase();
 
         //Calling BankApp
         // bankApp bankapp = new bankApp("talha", "345");

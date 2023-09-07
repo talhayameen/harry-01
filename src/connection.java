@@ -21,7 +21,7 @@ public class connection {
 
             
             // Setup the connection with the DB
-            connect = DriverManager.getConnection("jdbc:mysql://localhost/feedback?"+ "user=sqluser&password=sqluserpw");
+            connect = DriverManager.getConnection("jdbc:mysql://localhost:3307/feedback?"+ "user=root&password=password");
 
             // Statements allow to issue SQL queries to the database
             statement = connect.createStatement();
