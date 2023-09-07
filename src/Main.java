@@ -1,4 +1,4 @@
-import banking.connection;
+import banking.testCon;
 
 public class Main {
 
@@ -10,6 +10,11 @@ public class Main {
         //Calling DB Con
         // connection con = new connection();        
         // con.readDataBase();
+
+        testCon testCon = new testCon();
+        testCon.connectionTest();
+
+
 
         //Calling BankApp
         // bankApp bankapp = new bankApp("talha", "345");
