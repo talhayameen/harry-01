@@ -1,15 +1,20 @@
-import banking.bankApp;
+
+
 
 public class Main {
 
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
         System.out.println("\n\n\nHi Enjoying Learning Java ? \n");
 
+        //Calling DB Con
+        // connection con = new connection();
+        // con.readDataBase();
+
         //Calling BankApp
-        bankApp bankapp = new bankApp("talha", "345");
-        bankapp.showMenu();
+        // bankApp bankapp = new bankApp("talha", "345");
+        // bankapp.showMenu();
         
         //Calling AdditionMethod
         // simpleAddition simpleadd = new simpleAddition();
