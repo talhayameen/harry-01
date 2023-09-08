@@ -1,5 +1,6 @@
 import banking.connection;
 import banking.testCon;
+import userApp.DatabaseConnection;
 
 public class Main {
 
@@ -9,6 +10,10 @@ public class Main {
         System.out.println("\n\n\nHi Enjoying Learning Java ? \n");
 
         // Calling DB Con
+
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        databaseConnection.databaseConnection();
+        
         // connection con = new connection();        
         // con.readDataBase();
 
