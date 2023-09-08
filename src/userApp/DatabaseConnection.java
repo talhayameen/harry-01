@@ -5,20 +5,20 @@ import java.sql.DriverManager;
 
 public class DatabaseConnection {
 
-
-
     //myMethod
     public void databaseConnection(){
 
         try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3307/userapp?" + "user=root&password=password");
+            
+            Connection connectionTest = DriverManager.getConnection("jdbc:mysql://localhost:3307/userapp?" + "user=root&password=password");
 
-            if(connection != null){
+            if(connectionTest != null){
 
                 System.out.println("Connected to the userApp");
-                connection.close();
+
+                connectionTest.close();
             }
             else{
                 System.out.println("Failed To connect userApp");
@@ -28,4 +28,5 @@ public class DatabaseConnection {
             e.printStackTrace();
         }
     }
+
 }

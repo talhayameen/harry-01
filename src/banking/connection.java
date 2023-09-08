@@ -123,4 +123,8 @@ public class connection {
     public void connectionTest() {
     }
 
+    public static java.beans.Statement createStatement() {
+        return null;
+    }
+
 }

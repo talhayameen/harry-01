@@ -10,9 +10,8 @@ public class Main {
         System.out.println("\n\n\nHi Enjoying Learning Java ? \n");
 
         // Calling DB Con
-
-        DatabaseConnection databaseConnection = new DatabaseConnection();
-        databaseConnection.databaseConnection();
+        DatabaseConnection db = new DatabaseConnection();
+        db.databaseConnection();
         
         // connection con = new connection();        
         // con.readDataBase();
