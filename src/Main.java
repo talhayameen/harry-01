@@ -1,6 +1,8 @@
 import banking.connection;
 import banking.testCon;
 import userApp.DatabaseConnection;
+import userApp.addUserQuery;
+import userApp.userDTO;
 
 public class Main {
 
@@ -10,8 +12,12 @@ public class Main {
         System.out.println("\n\n\nHi Enjoying Learning Java ? \n");
 
         // Calling DB Con
-        DatabaseConnection db = new DatabaseConnection();
-        db.databaseConnection();
+        // DatabaseConnection db = new DatabaseConnection();
+        // db.databaseConnection();
+
+        addUserQuery adduser = new addUserQuery();
+        adduser.addUserData();
+
         
         // connection con = new connection();        
         // con.readDataBase();

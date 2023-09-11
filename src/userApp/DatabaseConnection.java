@@ -14,7 +14,9 @@ public class DatabaseConnection {
             
             Connection connectionTest = DriverManager.getConnection("jdbc:mysql://localhost:3307/userapp?" + "user=root&password=password");
 
-            if(connectionTest != null){
+            if(connectionTest != null)
+            
+            {
 
                 System.out.println("Connected to the userApp");
 
@@ -25,7 +27,11 @@ public class DatabaseConnection {
             }
             
         } catch (Exception e) {
+
+            System.out.println("Failed To connecting to userApp Database due to following issue : \n");
+
             e.printStackTrace();
+
         }
     }
 

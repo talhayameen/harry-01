@@ -1,6 +1,6 @@
 package userApp;
 
-public class addUserDTO {
+public class userDTO {
 
     private int id;
     private String name;
@@ -46,5 +46,15 @@ public class addUserDTO {
 
     public void setEmail(String email){
         this.email = email;
+    }
+
+    public String result(){
+
+        return "No Issue Found in DTO";
+    }
+
+    @Override
+    public String toString(){
+        return "UserDto [id=" + id + ", name=" + name + ", Father Name=" + fatherName + " , Contact="+contact+" , Email="+email+"]";
     }
 }
