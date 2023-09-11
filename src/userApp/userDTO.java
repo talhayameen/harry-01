@@ -39,7 +39,6 @@ public class userDTO {
 
         this.contact = contact;
     }
-
     public String getEmail(){
         return email;
     }
