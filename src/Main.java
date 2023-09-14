@@ -15,8 +15,14 @@ public class Main {
         // DatabaseConnection db = new DatabaseConnection();
         // db.databaseConnection();
 
-        addUserQuery adduser = new addUserQuery();
-        adduser.addUserData();
+
+        userDTO usrDTO = new userDTO();
+        usrDTO.setId(1);
+        usrDTO.setName("Talha");
+        usrDTO.setfatherName("Yameen");
+        usrDTO.setContact("03422341190");
+        usrDTO.setEmail("talhasam48@gmail.com");
+
 
         
         // connection con = new connection();        
@@ -24,8 +30,6 @@ public class Main {
 
         // testCon testCon = new testCon();
         // testCon.connectionTest();
-
-
 
         //Calling BankApp
         // bankApp bankapp = new bankApp("talha", "345");
@@ -35,11 +39,9 @@ public class Main {
         // simpleAddition simpleadd = new simpleAddition();
         // simpleadd.inputMethodForAddition();
         
-        
         //Calling 2-D array
         // multiDimentionalArray multdim = new multiDimentionalArray();
         // multdim.workingMultidimentionalArrays();
-
 
         //Calling methodOverloading
         // methodOverloading methodoverloading = new methodOverloading();
