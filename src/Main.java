@@ -15,6 +15,8 @@ public class Main {
         // DatabaseConnection db = new DatabaseConnection();
         // db.databaseConnection();
 
+        // addUserQuery adduser = new addUserQuery();
+        // adduser.addUserData();
 
         userDTO usrDTO = new userDTO();
         usrDTO.setId(1);
