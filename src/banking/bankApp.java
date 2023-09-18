@@ -28,7 +28,8 @@ public class bankApp {
 
         if (amount != 0 )
         {
- 
+            balance = balance - amount;
+            previousTransaction = -amount;
         }
     }
 
