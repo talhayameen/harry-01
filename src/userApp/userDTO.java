@@ -27,8 +27,6 @@ public class userDTO {
         return fatherName;
     }
 
-    public void setfatherName(String fatherName){
-        this.fatherName = fatherName;
     }
 
     public String getContact(){
