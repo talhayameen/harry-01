@@ -1,5 +1,5 @@
 dpath: "/home/teresol/development"
-file_name: "crm/dataaccessmsprocessaccount-crm.yaml"
+file_name: "/crm/dataaccessmschargesdetail-crm.yaml"
 replace_string: "0.1.9-crm"
 
 
