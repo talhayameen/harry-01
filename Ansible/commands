@@ -1,0 +1,2 @@
+#play your deployment
+ansible-playbook playbooks/deployment.yaml -i inventory

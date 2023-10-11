@@ -1,0 +1,3 @@
+dpath: "/home/teresol.admin/integration"
+file_name: "crm/dataaccessmsprocessaccount-crm.yaml"
+replace_string: "0.1.9-crm" 

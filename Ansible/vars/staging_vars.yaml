@@ -1,0 +1,3 @@
+dpath: "/home/devops/staging"
+file_name: "crm/coreapiaccount-teller.yaml"
+replace_string: "1.7.8-teller"

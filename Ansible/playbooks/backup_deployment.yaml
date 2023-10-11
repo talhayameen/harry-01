@@ -1,0 +1,22 @@
+---
+- name: Replace String in File
+  hosts: new_stag  # Replace with your target host or group
+  become: yes
+  vars:
+    # file_name: "{{ your_file_name }}"  # Provide the file name as a variable
+    # search_string: "{{ your_search_string }}"  # Provide the search string as a variable
+    # replace_string: "{{ your_replace_string }}"  # Provide the replacement string as a variable
+
+  tasks:
+    - name: Transfer replace_string.sh script to remote host
+      copy:
+        src: ../replace_string.sh  # Specify the path to your replace_string.sh script
+        dest: /tmp/replace_string.sh
+        mode: '0755'
+
+    - name: Execute the replace_string.sh script
+      command: /tmp/replace_string.sh "{{ file_name }}" "{{ replace_string }}"
+
+    # - name: deploy kubectl command
+    #   command : kubectl apply -f "{{ file_name }}"
+
