@@ -11,10 +11,6 @@ def modify_json(data):
     data['age'] = 35
     data['city'] = 'San Francisco'
 
-# Save JSON data to a file
-def save_json(data, file_path):
-    with open(file_path, 'w') as file:
-        json.dump(data, file, indent=4)
 
 # Main function
 def main():
