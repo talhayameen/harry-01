@@ -1,31 +1,31 @@
-[dev]
-10.90.96.42 ansible_user=teresol ansible_password=tsol123/?
+# [dev]
+# 10.90.96.42 ansible_user=teresol ansible_password=tsol123/?
 
-# all:
-#   hosts:
-#     new_stag:
-#       ansible_host: 10.206.178.54
-#       ansible_user: teresol.admin
-#       ansible_password: teresol123/?
+all:
+  hosts:
+    new_stag:
+      ansible_host: 10.206.178.54
+      ansible_user: teresol.admin
+      ansible_password: teresol123/?
 
-#     dev:
-#       ansible_host: 10.90.96.42
-#       ansible_user: teresol
-#       ansible_password: tsol123/?
-#     int_qa:
-#       ansible_host: 10.90.95.45
-#       ansible_user: talha
-#       ansible_password: teresol123/?
+    dev:
+      ansible_host: 10.90.96.42
+      ansible_user: teresol
+      ansible_password: tsol123/?
+    int_qa:
+      ansible_host: 10.90.95.45
+      ansible_user: talha
+      ansible_password: teresol123/?
 
-#   children:
-#     allservers:
-#       hosts:
-#         new_stag:
-#         dev:
-#         int_qa:
+  children:
+    allservers:
+      hosts:
+        new_stag:
+        dev:
+        int_qa:
         
-#     dev_qa:
-#       hosts:
-#         dev:
-#         int_qa:
+    dev_qa:
+      hosts:
+        dev:
+        int_qa:
     
