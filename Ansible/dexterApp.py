@@ -52,7 +52,7 @@ def update_ansible_vars(folder, service, tag, dpath):
 
     with open(vars_file_path, 'w') as vars_file:
         vars_file.write(f"dpath: \"{dpath}\"\n")
-        vars_file.write(f"file_name: \"/{folder}/{service}.yaml\"\n")
+        vars_file.write(f"file_name: \"{folder}/{service}\"\n")
         vars_file.write(f"replace_string: \"{tag}\"\n")
 
 def deploy_with_ansible(inventory_group, dpath):
