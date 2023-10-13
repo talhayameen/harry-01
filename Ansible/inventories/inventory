@@ -12,9 +12,10 @@ all:
       ansible_host: 10.90.96.42
       ansible_user: teresol
       ansible_password: tsol123/?
+
     int_qa:
       ansible_host: 10.90.95.45
-      ansible_user: talha
+      ansible_user: teresol.admin
       ansible_password: teresol123/?
 
   children:

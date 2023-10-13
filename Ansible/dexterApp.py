@@ -39,7 +39,7 @@ def get_user_folder_choice():
 
 def get_user_input():
     service = input("Enter the service name: ")
-    tag = input(f"Enter the tag for the service: ")
+    tag = input(f"Enter the tag for the {service} service: ")
     return service, tag
 
 def get_inventory_group():
@@ -52,7 +52,7 @@ def update_ansible_vars(folder, service, tag, dpath):
 
     with open(vars_file_path, 'w') as vars_file:
         vars_file.write(f"dpath: \"{dpath}\"\n")
-        vars_file.write(f"file_name: \"/{service}/{service}.yaml\"\n")
+        vars_file.write(f"file_name: \"/{service}.yaml\"\n")
         vars_file.write(f"replace_string: \"{tag}\"\n")
 
 def deploy_with_ansible(inventory_group, dpath):
@@ -64,15 +64,12 @@ def main():
     folder = get_user_folder_choice()
     service, tag = get_user_input()
     inventory_group = get_inventory_group()
-    # Set dpath as an environment variable
-    os.environ["DPATH"] = dpath
-
-    # Run Ansible playbook
-    playbook_path = "/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/playbooks/deployment.yaml"
-    subprocess.run(["ansible-playbook", "-i", "inventory", "-l", inventory_group, playbook_path])
+    update_ansible_vars(folder, service, tag, dpath)
+    deploy_with_ansible(inventory_group, dpath)
 
 if __name__ == "__main__":
     main()
+
 
 
 

@@ -1,9 +1,9 @@
 ---
 - name: Replace String in File
-  hosts: dev
+  hosts: dev_qa
   # become: yes
   vars_files:
-    - "/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/vars/dev_vars.yaml"  # Load the variable file based on the host
+    - "/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/vars/{{ inventory_hostname }}_vars.yaml"  # Load the variable file based on the host
 
   tasks:
     - name: Debug inventory_dir and inventory_hostname
@@ -16,7 +16,7 @@
 
     - name: Transfer replace_string.sh script to remote host
       copy:
-        src: ../replace_string.sh
+        src: /home/bahl/Documents/devops-document/DevOps-Practice/Ansible/replace_string.sh
         dest: "{{ dpath }}"
         mode: '0755'
 
