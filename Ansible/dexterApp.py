@@ -1,6 +1,10 @@
 import os
 import subprocess
 
+
+#list of vars
+dpath="/home/teresol/development"
+
 # List of folders
 folders = [
     "aaa",
@@ -38,33 +42,37 @@ def get_user_input():
     tag = input(f"Enter the tag for the {service} service: ")
     return service, tag
 
-def update_ansible_vars(folder, service, tag):
-    vars_file_path = f"/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/Ansible/vars/dev_vars.yaml"
+def get_inventory_group():
+    return input("Enter the inventory group to deploy to: ")
+
+def update_ansible_vars(folder, service, tag, dpath):
+    vars_file_path = f"Ansible/vars/dev_vars.yaml"
     if not os.path.exists(os.path.dirname(vars_file_path)):
         os.makedirs(os.path.dirname(vars_file_path))
 
     with open(vars_file_path, 'w') as vars_file:
-        vars_file.write(f"dpath: \"/home/teresol/development\"\n")
-        vars_file.write(f"file_name: \"/{folder}/{service}.yaml\"\n")
+        vars_file.write(f"dpath: \"{dpath}\"\n")
+        vars_file.write(f"file_name: \"/{service}/{service}.yaml\"\n")
         vars_file.write(f"replace_string: \"{tag}\"\n")
 
-def deploy_with_ansible():
+def deploy_with_ansible(inventory_group, dpath):
     playbook_path = "Ansible/playbooks/deployment.yaml"
-    # inventory = "development"  # You can change this based on your environment
-    command = f"ansible-playbook /home/bahl/Documents/devops-document/DevOps-Practice/Ansible/playbooks/deployment.yaml -i /home/bahl/Documents/devops-document/DevOps-Practice/Ansible/inventories/inventory"
+    command = f"ansible-playbook -i inventory -l {inventory_group} {playbook_path} -e dpath={dpath}"
     subprocess.run(command, shell=True)
 
 def main():
     folder = get_user_folder_choice()
     service, tag = get_user_input()
-    update_ansible_vars(folder, service, tag)
-    deploy_with_ansible()
+    inventory_group = get_inventory_group()
+    # Set dpath as an environment variable
+    os.environ["DPATH"] = dpath
+
+    # Run Ansible playbook
+    playbook_path = "/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/playbooks/deployment.yaml"
+    subprocess.run(["ansible-playbook", "-i", "inventory", "-l", inventory_group, playbook_path])
 
 if __name__ == "__main__":
     main()
-
-
-
 
 
 

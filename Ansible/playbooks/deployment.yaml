@@ -3,7 +3,7 @@
   hosts: dev
   # become: yes
   vars_files:
-    - "{{ inventory_dir }}/vars/{{ inventory_hostname }}_vars.yaml"  # Load the variable file based on the host
+    - "/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/vars/dev_vars.yaml"  # Load the variable file based on the host
 
   tasks:
     - name: Debug inventory_dir and inventory_hostname

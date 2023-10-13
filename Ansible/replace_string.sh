@@ -1,6 +1,6 @@
 #!/bin/bash
-
 # Define variables
+
 file_path="$1"  # Pass the file path as the first argument when running the script
 new_tag="$2"    # Pass the new tag as the second argument
 
