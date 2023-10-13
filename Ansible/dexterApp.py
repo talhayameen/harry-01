@@ -46,18 +46,18 @@ def get_inventory_group():
     return input("Enter the inventory group to deploy to: ")
 
 def update_ansible_vars(folder, service, tag, dpath):
-    vars_file_path = f"Ansible/vars/dev_vars.yaml"
+    vars_file_path = f"/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/vars/dev_vars.yaml"
     if not os.path.exists(os.path.dirname(vars_file_path)):
         os.makedirs(os.path.dirname(vars_file_path))
 
     with open(vars_file_path, 'w') as vars_file:
         vars_file.write(f"dpath: \"{dpath}\"\n")
-        vars_file.write(f"file_name: \"/{service}.yaml\"\n")
+        vars_file.write(f"file_name: \"/{folder}/{service}.yaml\"\n")
         vars_file.write(f"replace_string: \"{tag}\"\n")
 
 def deploy_with_ansible(inventory_group, dpath):
-    playbook_path = "Ansible/playbooks/deployment.yaml"
-    command = f"ansible-playbook -i inventory -l {inventory_group} {playbook_path} -e dpath={dpath}"
+    playbook_path = "/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/playbooks/deployment.yaml"
+    command = f"ansible-playbook -i inventories/inventory -l {inventory_group} {playbook_path} -e dpath={dpath}"
     subprocess.run(command, shell=True)
 
 def main():
