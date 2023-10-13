@@ -39,7 +39,7 @@ def get_user_folder_choice():
 
 def get_user_input():
     service = input("Enter the service name: ")
-    tag = input(f"Enter the tag for the {service} service: ")
+    tag = input(f"Enter the tag for the service: ")
     return service, tag
 
 def get_inventory_group():
