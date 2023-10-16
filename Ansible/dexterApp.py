@@ -22,6 +22,18 @@ folders = [
     "teresol"
 ]
 
+#List of envoirnment
+envoinment = ["dev",
+              "integration",
+              "qa",
+              "staging",
+              "pilot",
+              "production"
+              "pre-production"
+              ]
+
+
+#user folder numbering
 def get_user_folder_choice():
     print("Choose a folder:")
     for index, folder in enumerate(folders, start=1):
@@ -60,6 +72,9 @@ def deploy_with_ansible(inventory_group, dpath):
     command = f"ansible-playbook -i inventories/inventory -l {inventory_group} {playbook_path} -e dpath={dpath}"
     subprocess.run(command, shell=True)
 
+
+
+#MAIN 
 def main():
     folder = get_user_folder_choice()
     service, tag = get_user_input()
