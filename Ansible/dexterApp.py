@@ -72,8 +72,6 @@ def deploy_with_ansible(inventory_group, dpath):
     command = f"ansible-playbook -i inventories/inventory -l {inventory_group} {playbook_path} -e dpath={dpath}"
     subprocess.run(command, shell=True)
 
-
-
 #MAIN 
 def main():
     folder = get_user_folder_choice()
