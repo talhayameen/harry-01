@@ -43,6 +43,13 @@ envoinment = ["dev",
               "pre-production"
               ]
 
+#user envoirnment numbering
+def get_user_envoirnment_choice():
+    print("Choose the envoirnment")
+    for index, envoinment in enumerate(envoinment, start=1):
+        print(f"{index}. {envoinment}")
+    while True
+
 
 #user folder numbering
 def get_user_folder_choice():
