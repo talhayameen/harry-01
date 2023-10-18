@@ -32,17 +32,6 @@ envoirnment = [
     "qa + staging"
 ]
 
-
-#List of envoirnment
-envoinment = ["dev",
-              "integration",
-              "qa",
-              "staging",
-              "pilot",
-              "production"
-              "pre-production"
-              ]
-
 #user envoirnment numbering
 def get_user_envoirnment_choice():
     print("Choose the envoirnment")
@@ -53,8 +42,10 @@ def get_user_envoirnment_choice():
           choiceEnv = int(input("Enter the number of Envoirnment where you want to deploy"))
           if 1 <= choiceEnv <= len(envoinment):
               return envoinment[choiceEnv - 1]
-          else
+          else:
               print("Invalid choice. Please enter a valid number.")
+      except ValueError:
+              print("Invalid input. Please enter a number.")
 
 
 #user folder numbering
