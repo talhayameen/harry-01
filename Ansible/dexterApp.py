@@ -48,7 +48,13 @@ def get_user_envoirnment_choice():
     print("Choose the envoirnment")
     for index, envoinment in enumerate(envoinment, start=1):
         print(f"{index}. {envoinment}")
-    while True
+    while True:
+      try:
+          choiceEnv = int(input("Enter the number of Envoirnment where you want to deploy"))
+          if 1 <= choiceEnv <= len(envoinment):
+              return envoinment[choiceEnv - 1]
+          else
+              print("Invalid choice. Please enter a valid number.")
 
 
 #user folder numbering
