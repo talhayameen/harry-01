@@ -22,6 +22,17 @@ folders = [
     "teresol"
 ]
 
+# List of envoirnment
+envoirnment = [
+    "dev",
+    "integration",
+    "dev + integration",
+    "qa",
+    "staging",
+    "qa + staging"
+]
+
+
 #List of envoirnment
 envoinment = ["dev",
               "integration",
