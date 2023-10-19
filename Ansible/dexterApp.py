@@ -73,13 +73,10 @@ def get_inventory_group():
     return input("Enter the inventory group to deploy to: ")
 
 def update_ansible_vars(folder, service, tag, dpath):
-
-
     vars_file_path = f"/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/vars/dev_vars.yaml"
-
-    
     if not os.path.exists(os.path.dirname(vars_file_path)):
         os.makedirs(os.path.dirname(vars_file_path))
+
 
     with open(vars_file_path, 'w') as vars_file:
         vars_file.write(f"dpath: \"{dpath}\"\n")
