@@ -53,7 +53,6 @@ def get_user_folder_choice():
     print("Choose a folder:")
     for index, folder in enumerate(folders, start=1):
         print(f"{index}. {folder}")
-
     while True:
         try:
             choice = int(input("Enter the number of the folder you want to deploy: "))
@@ -64,14 +63,21 @@ def get_user_folder_choice():
         except ValueError:
             print("Invalid input. Please enter a number.")
 
+
+
+#user input for service name
 def get_user_input():
     service = input("Enter the service name: ")
     tag = input(f"Enter the tag for the {service} service: ")
     return service, tag
 
+
+#user input for envoirnment name such as dev , qa etc
 def get_inventory_group():
     return input("Enter the inventory group to deploy to: ")
 
+
+#updating vars 
 def update_ansible_vars(folder, service, tag, dpath):
     vars_file_path = f"/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/vars/dev_vars.yaml"
     if not os.path.exists(os.path.dirname(vars_file_path)):
