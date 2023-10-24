@@ -1,6 +1,6 @@
 ---
 - name: Replace String in File
-  hosts: dev_qa
+  hosts: dev
   # become: yes
   vars_files:
     - "/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/vars/{{ inventory_hostname }}_vars.yaml"  # Load the variable file based on the host
