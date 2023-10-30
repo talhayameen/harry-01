@@ -7,6 +7,9 @@ terraform {
   }
 }
 
+
+#my comment
+
 provider "docker" {}
 
 resource "docker_image" "nginx" {
