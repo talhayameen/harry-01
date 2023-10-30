@@ -1,6 +1,6 @@
 dpath: "/home/teresol.admin/integration"
-file_name: "crm/dataaccessmsaccountopeningbranchdetail-crm.yaml"
-replace_string: "0.1.7-crm"
+file_name: "crm/dataaccessmsvalidatecustomer-crm.yaml"
+replace_string: "1.1.0-crm"
 
 
 
