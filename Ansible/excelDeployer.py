@@ -3,7 +3,7 @@ import pandas as pd
 
 # Excel sheet se data read karna
 df = pd.read_excel('path/to/excel/sheet.xlsx')
-
+ 
 
 namespace_folders = ["aaa", "aaa-teller", "crm", ...]
 

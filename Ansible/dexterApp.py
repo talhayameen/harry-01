@@ -35,13 +35,13 @@ envoirnment = [
 #user envoirnment numbering
 def get_user_envoirnment_choice():
     print("Choose the envoirnment")
-    for index, envoinment in enumerate(envoinment, start=1):
-        print(f"{index}. {envoinment}")
+    for index, envoirnment in enumerate(envoirnments, start=1):
+        print(f"{index}. {envoirnment}")
     while True:
       try:
           choiceEnv = int(input("Enter the number of Envoirnment where you want to deploy"))
-          if 1 <= choiceEnv <= len(envoinment):
-              return envoinment[choiceEnv - 1]
+          if 1 <= choiceEnv <= len(envoirnments):
+              return tenvoirnments[choiceEnv - 1]
           else:
               print("Invalid choice. Please enter a valid number.")
       except ValueError:
@@ -99,6 +99,7 @@ def main():
     folder = get_user_folder_choice()
     service, tag = get_user_input()
     inventory_group = get_inventory_group()
+    get_user_envoirnment_choice()
     update_ansible_vars(folder, service, tag, dpath)
     deploy_with_ansible(inventory_group, dpath)
 
