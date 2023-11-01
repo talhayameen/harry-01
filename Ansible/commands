@@ -1,2 +1,4 @@
 #play your deployment
-ansible-playbook playbooks/deployment.yaml -i inventory
+
+ansible -m ping inventories/inventory
+ansible-playbook playbooks/deployment.yaml -i inventories/inventory
