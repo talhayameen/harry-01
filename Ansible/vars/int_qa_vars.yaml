@@ -1,6 +1,6 @@
 dpath: "/home/teresol.admin/integration"
-file_name: "crm/coremsexternalservice-crm.yaml"
-replace_string: "2.4.8-crm"
+file_name: "crm/dataaccessmsaccountdetail-crm.yaml"
+replace_string: "0.8.9-crm"
 
 
 
