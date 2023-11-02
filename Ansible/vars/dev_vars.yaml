@@ -1,5 +1,5 @@
 dpath: "/home/teresol/development"
-file_name: "crm/coremsexternalservice-crm.yaml"
-replace_string: "2.4.8-crm"
+file_name: "crm/dataaccessmsvalidatecharges-crm.yaml"
+replace_string: "0.1.2-crm"
 
 
