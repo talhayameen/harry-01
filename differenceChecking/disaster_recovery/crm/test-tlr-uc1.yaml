@@ -172,6 +172,8 @@ spec:
             - name: CORE_MS_CONSOLIDATED_ACCOUNT_DETAIL_WEBCLIENT_PORT
               value: "80"
 
+              #"here is extra variable"
+
           image: harbor.teresol.com/teresol/coreapiaccount:0.6.8-crm
           imagePullPolicy: Always
           name: coreapiaccount-crm

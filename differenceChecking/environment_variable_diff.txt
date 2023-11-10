@@ -1,0 +1,26 @@
+Differences found between production/aaa/coreapimatrix-crm.yaml and disaster_recovery/aaa/coreapimatrix-crm.yaml:
+Variables present only in production:
+name= QUARKUS_LOG_LEVEL
+name= QUARKUS_OIDC_AUTH_SERVER_URL
+name= QUARKUS_OIDC_CLIENT_ID
+name= CORE_MS_CREATE_MATRIX_IP
+name= CORE_MS_CREATE_MATRIX_PORT
+containerPort= 8080
+
+Variables present only in disaster_recovery:
+name= QUARKUS_TLS_TRUST_ALL
+name= QUARKUS_OIDC_AUTH_SERVER_URL
+name= QUARKUS_OIDC_CLIENT_ID
+name= CORE_MS_CREATE_MATRIX_IP
+name= CORE_MS_CREATE_MATRIX_PORT
+containerPort= 8080
+
+Differences found between production/crm/test-tlr-uc1.yaml and disaster_recovery/crm/test-tlr-uc1.yaml:
+Variables present only in production:
+containerPort= 8080
+
+Variables present only in disaster_recovery:
+name= CORE_MS_CONSOLIDATED_ACCOUNT_DETAIL_WEBCLIENT_IP
+name= CORE_MS_CONSOLIDATED_ACCOUNT_DETAIL_WEBCLIENT_PORT
+containerPort= 8080
+

@@ -166,7 +166,7 @@ spec:
             - name: DATAACCESS_MS_ACCOUNT_OPENING_STATUS_DETAIL_PORT
               value: "80"
 
-
+  #while here is no var of consolidate
 
 
           image: harbor.teresol.com/teresol/coreapiaccount:0.6.8-crm
