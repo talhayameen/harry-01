@@ -8,7 +8,7 @@ echo " " >> /home/bahl/Documents/devops-document/DevOps-Practice/README.md
 echo "Hello from dexter" >> /home/bahl/Documents/devops-document/DevOps-Practice/README.md
 
 # Stage and commit changes
-git add .
+git add README.md
 git commit -m "Adding py"
 
 # Push changes to the repository

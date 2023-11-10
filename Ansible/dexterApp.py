@@ -34,6 +34,7 @@ envoirnments = [
 
 
 ###################################user folder numbering##################################
+
 def get_user_folder_choice():
     print("Choose a folder:")
     for index, folder in enumerate(folders, start=1):
@@ -51,6 +52,7 @@ def get_user_folder_choice():
 
 
 ###################################user input for service name##################################
+
 def get_user_input():
     service = input("Enter the service name: ")
     tag = input(f"Enter the tag for the {service} service: ")
@@ -75,7 +77,6 @@ def update_ansible_dev_vars(folder, service, tag):
 
 
 
-
 ######################################user envoirnment numbering#################################
 
 
@@ -84,6 +85,7 @@ def get_user_envoirnment_choice():
     for index, envoirnment in enumerate(envoirnments, start=1):
         print(f"{index}. {envoirnment}")
     while True:
+      
       try:
 
           choiceEnv = int(input("Enter the number of Envoirnment where you want to deploy: "))
@@ -95,7 +97,7 @@ def get_user_envoirnment_choice():
               folder = get_user_folder_choice()
               ##########asking service name and tag#########
               service, tag = get_user_input()
-            #   dpath="/home/teresol/development"
+              
               update_ansible_dev_vars(folder, service, tag)
               
               return envoirnments[choiceEnv - 1]
@@ -116,7 +118,7 @@ def get_user_envoirnment_choice():
 def deploy_with_ansible(env):
 
     playbook_path = "/home/bahl/Documents/devops-document/DevOps-Practice/Ansible/playbooks/deployment.yaml"
-    command = f"ansible-playbook -i inventories/inventory -l {env} {playbook_path}"
+    command = f"ansible-playbook -i inventories/inventory -l {env} {playbook_path} "
     subprocess.run(command, shell=True)
 
 #MAIN 

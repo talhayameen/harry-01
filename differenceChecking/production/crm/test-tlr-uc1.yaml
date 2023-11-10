@@ -1,0 +1,178 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapiaccount-crm
+  name: coreapiaccount-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31986
+  selector:
+    app: coreapiaccount-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapiaccount-crm
+  name: coreapiaccount-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coreapiaccount-crm
+  template:
+    metadata:
+      labels:
+        app: coreapiaccount-crm
+    spec:
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_OIDC_AUTH_SERVER_URL
+
+            - name: QUARKUS_OIDC_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_ID_ACCOUNT
+
+            - name: QUARKUS_OIDC_CREDENTIALS_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_SECRET_ACCOUNT
+
+
+            - name: DATAACCESS_ACCOUNT_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_SIGNATURE_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountsignaturedetail-crm"
+
+            - name: DATAACCESS_ACCOUNT_CONDITION_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountconditiondetail-crm"
+
+            - name: DATAACCESS_ACCOUNT_TERM_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_SIGNATURE_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MOVE_ACCOUNT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsmoveaccountdetail-crm"
+
+            - name: DATAACCESS_ACCOUNT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountdetail-crm"
+
+            - name: DATAACCESS_ACCOUNT_CONDIITON_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_IBAN_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_TERM_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccounttermdetail-crm"
+
+            - name: DATAACCESS_ACCOUNT_IMPEX_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountimpexdetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_ACCOUNT_IBAN_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountibandetail-crm"
+
+            - name: DATAACCESS_VALIDATE_ACCOUNT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_VALIDATE_ACCOUNT_WEBCLIENT_IP
+              value: "dataaccessmsvalidateaccount-crm"
+
+            - name: DATAACCESS_MOVE_ACCOUNT_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_IMPEX_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_SIGNATURE_DETAIL_IMAGE_WEBCLIENT_IP
+              value: "dataaccessmsaccountsignaturedetailimage-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_ACCOUNT_SIGNATURE_DETAIL_IMAGE_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_ALERT_REGISTRATION_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountalertregistrationdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_ACCOUNT_ALERT_REGISTRATION_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_OPENING_BRANCH_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountopeningbranchdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_ACCOUNT_OPENING_BRANCH_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_OPENING_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountopeningdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_ACCOUNT_OPENING_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_CATEGORY_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountcategorydetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_ACCOUNT_CATEGORY_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_ACCOUNT_OPENING_STATUS_DETAIL_IP
+              value: "dataaccessmsaccountopeningstatusdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_ACCOUNT_OPENING_STATUS_DETAIL_PORT
+              value: "80"
+
+
+
+
+          image: harbor.teresol.com/teresol/coreapiaccount:0.6.8-crm
+          imagePullPolicy: Always
+          name: coreapiaccount-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
