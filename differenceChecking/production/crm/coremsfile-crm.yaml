@@ -1,0 +1,137 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coremsfile-crm
+  name: coremsfile-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremsfile-crm
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: coremsfile-crm
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      nodeName: r2bcbsint23.bank.alhabib.com                 #r2bcbsint29.bank.alhabib.com
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+            - name: DATAACCESS_FILE_WEBCLIENT_IP
+              value: "dataaccessmsfile-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_FILE_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_COMMON_PROPERTIES_WEBCLIENT_IP
+              value: "dataaccessmscommonproperties-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_COMMON_PROPERTIES_WEBCLIENT_PORT
+              value: "80"
+
+            - name: RETENTION_PERIOD_IN_HOURS
+              value: "6"
+
+            - name: PARALLEL_EXECUTORS_MULTIPLIER
+              value: "1"
+
+            - name: REDIS_IP
+              value: "redisserver.teresol.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+
+            - name: DATA_ACCESS_COMPANY_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmscompanydetail-crm"
+            - name: DATA_ACCESS_COMPANY_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_ACCOUNT_OPENING_BRANCH_DETAIL_IP
+              value: "dataaccessmsaccountopeningbranchdetail-crm"
+            - name: DATAACCESS_MS_ACCOUNT_OPENING_BRANCH_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_CUSTOMER_DETAIL_IP
+              value: "dataaccessmscustomerdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_CUSTOMER_DETAIL_PORT
+              value: "80"
+
+
+          image: harbor.teresol.com/teresol/coremsfile:1.1.9-crm
+          name: coremsfile-crm
+          ports:
+            - containerPort: 8080
+
+          volumeMounts:
+            - mountPath: /tmp/files
+              name: contentmanager-data
+            - mountPath: /tmp/swiftXmlFile
+              name: swiftxmlfiles-data
+          securityContext:
+             capabilities:
+                add: ["SYS_ADMIN"]
+      restartPolicy: Always
+      volumes:
+        - name: contentmanager-data
+          hostPath:
+             path: /lbosdata
+             type: DirectoryOrCreate
+        - name: swiftxmlfiles-data
+          hostPath:
+             path: /swift
+             type: DirectoryOrCreate
+#########################################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coremsfile-crm
+  name: coremsfile-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+      nodePort:  31764
+  selector:
+    app: coremsfile-crm
+  type: NodePort

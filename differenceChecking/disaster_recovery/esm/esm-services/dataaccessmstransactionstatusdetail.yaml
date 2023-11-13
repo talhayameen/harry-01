@@ -1,0 +1,99 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: esm
+  labels:
+    app: dataaccessmstransactionstatusdetail
+  name: dataaccessmstransactionstatusdetail
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31404
+  selector:
+    app: dataaccessmstransactionstatusdetail
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: esm
+  labels:
+    app: dataaccessmstransactionstatusdetail
+  name: dataaccessmstransactionstatusdetail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmstransactionstatusdetail
+  template:
+    metadata:
+      labels:
+        app: dataaccessmstransactionstatusdetail
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+
+      containers:
+        - env:            
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+
+
+            - name: TRANSACTION_STATUS_DETAIL_PORT
+              value: "8080"
+            - name: TRANSACTION_STATUS_DETAIL_HOST
+              value: "0.0.0.0"
+            - name: TRANSACTION_STATUS_DETAIL_CORS
+              value: "true"
+            - name: DB-KIND
+              value: "mssql" 
+            - name: SQL_USERNAME
+              value: "rps"
+            - name: SQL_PASSWORD
+              value: "Rps123/?"
+            - name: DB_USER
+              value: "JVb7gFmW3KDBw5oyWPhUbg=="
+            - name: DB_PASS
+              value: "8eK0duD7z1u/F1GCisSqVQ=="
+            - name: SQL_SERVER_IP
+              value: "10.90.95.85"
+            - name: SQL_SERVER_PORT
+              value: "1433"
+            - name: DATABASE_NAME
+              value: "HR_DirectPayment"
+            - name: SQL_DRIVER
+              value: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+            - name: QUARKUS_TLS_TRUST_ALL 
+              value: "true"
+
+          image: harbor.teresol.com/coreservices/dataaccessmstransactionstatusdetail:1.0.2
+          imagePullPolicy: Always
+          name: dataaccessmstransactionstatusdetail
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

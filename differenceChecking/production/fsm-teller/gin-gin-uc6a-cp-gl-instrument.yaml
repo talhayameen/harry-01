@@ -1,0 +1,81 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: gin-gin-uc6a-cp-gl-instrument
+  name: gin-gin-uc6a-cp-gl-instrument
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gin-gin-uc6a-cp-gl-instrument
+  template:
+    metadata:
+      labels:
+        app: gin-gin-uc6a-cp-gl-instrument
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/gin-gin-uc6a-cp-gl-instrument:1.0.7
+          imagePullPolicy: Always
+          name: gin-gin-uc6a-cp-gl-instrument
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gin-gin-uc6a-cp-gl-instrument
+  name: gin-gin-uc6a-cp-gl-instrument
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: gin-gin-uc6a-cp-gl-instrument
+  type: ClusterIP
+
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-gin-gin-uc6a-cp-gl-instrument
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/GIN_GIN_UC6a_CP_GL_Instrument`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: gin-gin-uc6a-cp-gl-instrument
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret
+

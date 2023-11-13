@@ -1,0 +1,97 @@
+---
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  labels:
+    app: esmaccount
+  name: esmaccount
+  namespace: esm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esmaccount
+  template:
+    metadata:
+      labels:
+        app: esmaccount
+    spec:
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: esm-configmap-fsm
+            - configMapRef:
+                name: esm-configmap-core
+          env:
+            - name: BANK_IMD
+              value: "1"
+
+            - name: TOKEN_EXPIRY_IN
+              value: "290s"
+
+            - name: TOKEN_CACHE_IN
+              value: "290"
+
+            - name: MAX_NO_OF_TRANSACTION
+              value: "60"
+
+            - name: MAX_NO_OF_MONTHS
+              value: "6"
+
+          image: harbor.teresol.com/esm/esmaccount:esm-1.0.6
+          imagePullPolicy: Always
+          name: esmaccount
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: esmaccount
+  name: esmaccount
+  namespace: esm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080    
+  selector:
+    app: esmaccount
+  type: ClusterIP
+
+ #########################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-esm-account
+  namespace: esm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/esm/esm-account`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: esmaccount
+          namespace: esm
+          port: 80
+  tls:
+    secretName: bahl-tls-secret
+

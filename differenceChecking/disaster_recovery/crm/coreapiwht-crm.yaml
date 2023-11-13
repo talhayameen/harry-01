@@ -1,0 +1,126 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapiwht-crm
+  name: coreapiwht-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31985
+  selector:
+    app: coreapiwht-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapiwht-crm
+  name: coreapiwht-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coreapiwht-crm
+  template:
+    metadata:
+      labels:
+        app: coreapiwht-crm
+    spec:
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_OIDC_AUTH_SERVER_URL
+
+            - name: QUARKUS_OIDC_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_ID_WHT
+
+            - name: QUARKUS_OIDC_CREDENTIALS_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_SECRET_WHT
+
+
+            - name: DATAACCESS_WHT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmswhtdetail-crm.teresol.svc.cluster.local"
+
+            - name: CORE_MS_WHT_WEBCLIENT_IP
+              value: "coremswht-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_WHT_THRESHOLD_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: CORE_MS_WHT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_WHT_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_WHT_DOCUMENT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmswhtdocumentdetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_WHT_DOCUMENT_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_WHT_THRESHOLD_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmswhtthresholddetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_VALIDATE_WHT_WEBCLIENT_IP
+              value: "dataaccessmsvalidatewht-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_VALIDATE_WHT_WEBCLIENT_PORT
+              value: "80"
+
+          image: harbor.teresol.com/teresol/coreapiwht:0.0.5-crm
+          imagePullPolicy: Always
+          name: coreapiwht-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

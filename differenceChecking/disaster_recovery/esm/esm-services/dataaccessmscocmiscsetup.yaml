@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: esm
+  labels:
+    app: dataaccessmscocmiscsetup
+  name: dataaccessmscocmiscsetup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmscocmiscsetup
+  template:
+    metadata:
+      labels:
+        app: dataaccessmscocmiscsetup
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+
+          image: harbor.teresol.com/coreservices/dataaccessmscocmiscsetup:1.0.0
+          imagePullPolicy: Always
+          name: dataaccessmscocmiscsetup
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: esm
+  labels:
+    app: dataaccessmscocmiscsetup
+  name: dataaccessmscocmiscsetup
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 30771
+  selector:
+    app: dataaccessmscocmiscsetup
+  type: NodePort

@@ -1,0 +1,108 @@
+#######################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapibank-crm
+  name: coreapibank-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31736
+  selector:
+    app: coreapibank-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapibank-crm
+  name: coreapibank-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coreapibank-crm
+  template:
+    metadata:
+      labels:
+        app: coreapibank-crm
+    spec:
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_OIDC_AUTH_SERVER_URL
+
+            - name: QUARKUS_OIDC_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_ID_BANK
+
+            - name: QUARKUS_OIDC_CREDENTIALS_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_SECRET_BANK
+
+            - name: DATAACCESS_MS_BANKDETAIL_IP
+              value: "dataaccessmsbankdetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_BANKDETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_NOSTROBANKDETAIL_IP
+              value: "dataaccessmsnostrobankdetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_NOSTROBANKDETAIL_PORT
+              value: "80" 
+
+
+          image: harbor.teresol.com/teresol/coreapibank:1.0.6-crm
+          imagePullPolicy: Always
+          name: coreapibank-crm
+          ports:
+            - containerPort: 8080
+              name: http
+

@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmssetupfiledetail-crm
+  name: dataaccessmssetupfiledetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32158
+  selector:
+    app: dataaccessmssetupfiledetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmssetupfiledetail-crm
+  name: dataaccessmssetupfiledetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmssetupfiledetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmssetupfiledetail-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmssetupfiledetail:1.0.1-crm
+          imagePullPolicy: Always
+          name: dataaccessmssetupfiledetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

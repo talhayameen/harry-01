@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: esmgettransaction
+  name: esmgettransaction
+  namespace: esm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31766
+  selector:
+    app: esmgettransaction
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: esmgettransaction
+  name: esmgettransaction
+  namespace: esm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esmgettransaction
+  template:
+    metadata:
+      labels:
+        app: esmgettransaction
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: esm-configmap-fsm
+
+          env:
+            - name: API_VERSION
+              value: "v3"
+
+            - name: CORE_API_TIEUP
+              value: "Y29yZS1hcGktdGlldXA6RUJiVzJiQXZvcFZQWGJsSHB5RXVwUjZLQ0h4QjRPZHY="
+
+            - name: MIDDLEWARE_CLIENT
+              value: "https://10.200.118.120:7844"
+
+            - name: GET_TOKEN
+              value: "https://services.teresol-bahl.com/"
+
+            - name: TIEUP_CLIENT
+              value: "http://coreapitieup:80/"
+
+            - name: INTERVAL
+              value: "120"
+
+            - name: ENABLE_AUTH
+              value: "true"
+
+            - name: LOG_LEVEL
+              value: "DEBUG"
+
+            - name: QUARKUS_SCHEDULER_ENABLED
+              value: "false"
+
+
+          image: harbor.teresol.com/esm/esmgettransaction:1.2.3
+          imagePullPolicy: Always
+          name: esmgettransaction
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsslipdetail-crm
+  name: dataaccessmsslipdetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31769
+  selector:
+    app: dataaccessmsslipdetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsslipdetail-crm
+  name: dataaccessmsslipdetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsslipdetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsslipdetail-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsslipdetail:1.0.4-crm
+          imagePullPolicy: Always
+          name: dataaccessmsslipdetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

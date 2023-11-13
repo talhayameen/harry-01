@@ -1,0 +1,39 @@
+
+##########################################
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapicompany
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-company/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapicompany-crm
+  - match:
+    - uri:
+        prefix: /core-api-company/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapicompany-teller
+
+  - match:
+    - uri:
+        prefix: /core-api-company
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapicompany

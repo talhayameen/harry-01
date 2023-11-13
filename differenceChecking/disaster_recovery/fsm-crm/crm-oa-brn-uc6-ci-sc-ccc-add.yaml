@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: crm-oa-brn-uc6-ci-sc-ccc-add
+  name: crm-oa-brn-uc6-ci-sc-ccc-add
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crm-oa-brn-uc6-ci-sc-ccc-add
+  template:
+    metadata:
+      labels:
+        app: crm-oa-brn-uc6-ci-sc-ccc-add
+    spec:
+      containers:
+      - envFrom:
+          - configMapRef:
+              name: fsm-configmap
+        image: harbor.teresol.com/fsm/crm-oa-brn-uc6-ci-sc-ccc-add:1.0.5
+        imagePullPolicy: Always
+        name: crm-oa-brn-uc6-ci-sc-ccc-add
+        ports:
+        - containerPort: 80
+        - containerPort: 3500
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: crm-oa-brn-uc6-ci-sc-ccc-add
+  name: crm-oa-brn-uc6-ci-sc-ccc-add
+  namespace: fsm
+spec:
+  ports:
+    - name: "fe"
+      port: 80
+      targetPort: 80
+    - name: "fsm"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: crm-oa-brn-uc6-ci-sc-ccc-add
+  type: ClusterIP
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-crm-oa-brn-uc6-ci-sc-ccc-add
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: PathPrefix(`/fe/CRM_OA_BRN_UC6_CI_SC_CCC_Add`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+        - name: strip-path
+          namespace: fsm
+      services:
+        - kind: Service
+          name: crm-oa-brn-uc6-ci-sc-ccc-add
+          namespace: fsm
+          port: 80
+
+    - match: PathPrefix(`/fsm/CRM_OA_BRN_UC6_CI_SC_CCC_Add`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: crm-oa-brn-uc6-ci-sc-ccc-add
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

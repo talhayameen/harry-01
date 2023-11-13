@@ -1,0 +1,48 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-frontend
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/`, `/favicon.ico`) && (Headers(`X-Testing-Branch-Code`, `1010`) || Headers(`X-Testing-Branch-Code`, `1111`))
+      priority: 12
+      kind: Rule
+      middlewares:
+        - name: https-redirect
+          namespace: fsm
+      services:
+        - kind: Service
+          name: bahl-frontend-testing
+          namespace: fsm
+          port: 80
+
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/`)
+      priority: 8
+      kind: Rule
+      middlewares:
+        - name: https-redirect
+          namespace: fsm
+      services:
+        - kind: Service
+          name: bahl-frontend-teller
+          namespace: fsm
+          port: 80
+
+    - match: Host(`services-crm.teresol-bahl.com`) && PathPrefix(`/`, `/CrmAccountOpening`)
+      priority: 8
+      kind: Rule
+      middlewares:
+        - name: https-redirect
+          namespace: fsm
+      services:
+        - kind: Service
+          name: bahl-frontend-crm
+          namespace: fsm
+          port: 80
+  tls:
+    secretName: bahl-tls-secret

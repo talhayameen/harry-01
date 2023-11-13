@@ -1,0 +1,53 @@
+#####################################
+# AAA aaa-validate-user-data-access
+#####################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: aaa-validate-user-data-access-service-crm
+  name: aaa-validate-user-data-access-service-crm
+  namespace: aaa
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      #      nodePort: 30117
+  selector:
+    app: aaa-validate-user-data-access-crm
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aaa-validate-user-data-access-crm
+  labels:
+    app: aaa-validate-user-data-access-crm
+  namespace: aaa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aaa-validate-user-data-access-crm
+  template:
+    metadata:
+      labels:
+        app: aaa-validate-user-data-access-crm
+    spec:
+      #nodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+
+          name: aaa-validate-user-data-access-crm
+          image: harbor.teresol.com/aaa/aaa-validate-user-data-access:1.5.6-crm
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080

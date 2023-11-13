@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: crm-ao-cpu-uc55-fo-ca-pca
+  name: crm-ao-cpu-uc55-fo-ca-pca
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crm-ao-cpu-uc55-fo-ca-pca
+  template:
+    metadata:
+      labels:
+        app: crm-ao-cpu-uc55-fo-ca-pca
+    spec:
+      containers:
+      - envFrom:
+          - configMapRef:
+              name: fsm-configmap
+        image: harbor.teresol.com/fsm/crm-ao-cpu-uc55-fo-ca-pca:1.1.5
+        imagePullPolicy: Always
+        name: crm-ao-cpu-uc55-fo-ca-pca
+        ports:
+        - containerPort: 80
+        - containerPort: 3500
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: crm-ao-cpu-uc55-fo-ca-pca
+  name: crm-ao-cpu-uc55-fo-ca-pca
+  namespace: fsm
+spec:
+  ports:
+    - name: "fe"
+      port: 80
+      targetPort: 80
+    - name: "fsm"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: crm-ao-cpu-uc55-fo-ca-pca
+  type: ClusterIP
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-crm-ao-cpu-uc55-fo-ca-pca
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: PathPrefix(`/fe/CRM_AO_CPU_UC55_FO_CA_PCA`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+        - name: strip-path
+          namespace: fsm
+      services:
+        - kind: Service
+          name: crm-ao-cpu-uc55-fo-ca-pca
+          namespace: fsm
+          port: 80
+
+    - match: PathPrefix(`/fsm/CRM_AO_CPU_UC55_FO_CA_PCA`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: crm-ao-cpu-uc55-fo-ca-pca
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

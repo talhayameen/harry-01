@@ -1,0 +1,49 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: reporting
+  labels:
+    app.kubernetes.io/name: dataaccessmsreport
+  name: dataaccessmsreport
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31101
+  selector:
+    app.kubernetes.io/name: dataaccessmsreport
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: reporting
+  labels:
+    app.kubernetes.io/name: dataaccessmsreport
+  name: dataaccessmsreport
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dataaccessmsreport
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dataaccessmsreport
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+
+          image: harbor.teresol.com/reporting/dataaccessmsreport:1.1.25
+          imagePullPolicy: Always
+          name: dataaccessmsreport
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

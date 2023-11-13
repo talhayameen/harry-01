@@ -1,0 +1,34 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coremsreportbirt
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+
+  - match:
+    - uri:
+        prefix: /core-api-report/v2/transactionVoucher
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coremsreportbirt.reporting.svc.cluster.local
+      weight: 60
+
+  - match:
+    - uri:
+        prefix: /core-api-report/v1
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coremsreportbirt.reporting.svc.cluster.local
+      weight: 40
+
+

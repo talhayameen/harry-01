@@ -1,0 +1,240 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coremsaccount-crm
+  name: coremsaccount-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 30392
+  selector:
+    app: coremsaccount-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coremsaccount-crm
+  name: coremsaccount-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremsaccount-crm
+  template:
+    metadata:
+      labels:
+        app: coremsaccount-crm
+    spec:
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_OIDC_AUTH_SERVER_URL
+
+            - name: DATAACCESS_ACCOUNT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountdetail-crm"
+            - name: DATAACCESS_ACCOUNT_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_TERM_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccounttermdetail-crm"
+            - name: DATAACCESS_ACCOUNT_TERM_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MOVE_ACCOUNT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsmoveaccountdetail-crm"
+            - name: DATAACCESS_MOVE_ACCOUNT_DETAIL_WEBCLIENT_PORT
+              value: "80"
+              
+            - name: DATAACCESS_ACCOUNT_CONDIITON_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountconditiondetail-crm"              
+            - name: DATAACCESS_ACCOUNT_CONDIITON_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_VALIDATE_ACCOUNT_WEBCLIENT_IP
+              value: "dataaccessmsvalidateaccount-crm"
+            - name: DATAACCESS_VALIDATE_ACCOUNT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_ALERT_REGISTRATION_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountalertregistrationdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_ACCOUNT_ALERT_REGISTRATION_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_OPENING_BRANCH_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountopeningbranchdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_ACCOUNT_OPENING_BRANCH_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_CATEGORY_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountcategorydetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_ACCOUNT_CATEGORY_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_ACCOUNT_OPENING_STATUS_DETAIL_IP
+              value: "dataaccessmsaccountopeningstatusdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_ACCOUNT_OPENING_STATUS_DETAIL_PORT
+              value: "80"
+            
+            - name: CORE_MS_CONSOLIDATED_ACCOUNT_DETAIL_WEBCLIENT_IP
+              value: "coremsaccount-crm"           
+            - name: CORE_MS_CONSOLIDATED_ACCOUNT_DETAIL_WEBCLIENT_PORT
+              value: "80"
+  
+            - name: DATAACCESS_BRANCH_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsbranchdetail-crm"	     
+            - name: DATAACCESS_BRANCH_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_CREDIT_SETUP_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmssetupcreditdetail-crm"             
+            - name: DATAACCESS_CREDIT_SETUP_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_PRODUCT_CONDITION_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsproductconditiondetail-crm"
+            - name: DATAACCESS_PRODUCT_CONDITION_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_CURRENCY_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmscurrencydetail-crm"             
+            - name: DATAACCESS_CURRENCY_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_SETUP_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmssetupaccountdetail-crm"             
+            - name: DATAACCESS_ACCOUNT_SETUP_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_PARAMS_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsparamsdetails-crm"             
+            - name: DATAACCESS_PARAMS_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_CUSTOMER_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmscustomerdetail-crm"             
+            - name: DATAACCESS_CUSTOMER_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_BIOMETRIC_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsbiometricdetail-crm"             
+            - name: DATAACCESS_BIOMETRIC_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_IMPEX_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountimpexdetail-crm"             
+            - name: DATAACCESS_ACCOUNT_IMPEX_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_IBAN_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountibandetail-crm"             
+            - name: DATAACCESS_ACCOUNT_IBAN_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_SIGNATURE_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountsignaturedetail-crm"             
+            - name: DATAACCESS_ACCOUNT_SIGNATURE_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_SIGNATURE_DETAIL_IMAGE_WEBCLIENT_IP
+              value: "dataaccessmsaccountsignaturedetailimage-crm.teresol.svc.cluster.local"             
+            - name: DATAACCESS_ACCOUNT_SIGNATURE_DETAIL_IMAGE_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_CONDITION_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountconditiondetail-crm"             
+            - name: DATAACCESS_ACCOUNT_CONDITION_DETAIL_WEBCLIENT_PORT
+              value: "80"                           
+
+            - name: DATAACCESS_PRODUCT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsproductdetail-crm" 
+            - name: DATAACCESS_PRODUCT_DETAIL_WEBCLIENT_PORT
+              value: "80"                              
+
+            - name: DATAACCESS_SETUP_ALERT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmssetupalertdetail-crm"
+            - name: DATAACCESS_SETUP_ALERT_DETAIL_WEBCLIENT_PORT
+              value: "80"                              
+
+            - name: DATAACCESS_CARD_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmscarddetail-crm"
+            - name: DATAACCESS_CARD_DETAIL_WEBCLIENT_PORT
+              value: "80"                    
+
+            - name: DATAACCESS_MODAVTV_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsmodavtvdetail-crm"
+            - name: DATAACCESS_MODAVTV_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_VALIDATE_PARAMS_WEBCLIENT_IP
+              value: "dataaccessmsvalidateparams-crm"
+            - name: DATAACCESS_VALIDATE_PARAMS_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_COUNTRY_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmscountrydetail-crm"
+            - name: DATAACCESS_COUNTRY_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_OPENING_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsaccountopeningdetail-crm"
+            - name: DATAACCESS_ACCOUNT_OPENING_DETAIL_WEBCLIENT_PORT
+              value: "80"
+              
+            - name: DATAACCESS_MS_VALIDATE_BIOMETRIC_WEBCLIENT_IP
+              value: "dataaccessmsvalidatebiometric-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_BIOMETRIC_WEBCLIENT_PORT
+              value: "80"
+
+
+          image: harbor.teresol.com/teresol/coremsaccount:0.5.9-crm
+          imagePullPolicy: Always
+          name: coremsaccount-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+

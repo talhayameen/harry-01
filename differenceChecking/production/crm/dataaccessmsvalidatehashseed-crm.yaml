@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsvalidatehashseed-crm
+  name: dataaccessmsvalidatehashseed-crm
+spec:
+  ports:
+    - name: http
+      #nodePort: 31395
+      port: 80
+      targetPort: 8080
+  selector:
+    app: dataaccessmsvalidatehashseed-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol      
+  labels:
+    app: dataaccessmsvalidatehashseed-crm
+  name: dataaccessmsvalidatehashseed-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsvalidatehashseed-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsvalidatehashseed-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsvalidatehashseed:1.0.2-crm
+          imagePullPolicy: Always
+          name: dataaccessmsvalidatehashseed-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

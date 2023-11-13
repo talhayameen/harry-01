@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapieprc
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-eprc
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapieprc.esm.svc.cluster.local

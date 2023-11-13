@@ -1,0 +1,38 @@
+
+#####################
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapicurrency
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-currency/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapicurrency-crm
+  - match:
+    - uri:
+        prefix: /core-api-currency/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapicurrency-teller
+  - match:
+    - uri:
+        prefix: /core-api-currency
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapicurrency

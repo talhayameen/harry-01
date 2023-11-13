@@ -1,0 +1,40 @@
+
+
+########################################
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapiwht
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-wht/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapiwht-crm
+          
+  - match:
+    - uri:
+        prefix: /core-api-wht/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapiwht-teller
+  - match:
+    - uri:
+        prefix: /core-api-wht
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapiwht

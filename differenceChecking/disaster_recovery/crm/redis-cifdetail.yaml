@@ -1,0 +1,65 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: redis-cifdetail
+  name: redis-cifdetail
+spec:
+  ports:
+    - name: http
+      port: 6379
+      targetPort: 6379
+      #  nodePort: 32222
+  selector:
+    app: redis-cifdetail
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: redis-cifdetail
+  name: redis-cifdetail
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-cifdetail
+  template:
+    metadata:
+      labels:
+        app: redis-cifdetail
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      #nodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+
+      hostAliases:
+      - ip: "10.90.96.46"
+        hostnames:
+        - "devcore.bahl-habits.org"
+      - ip: "10.90.96.47"
+        hostnames:
+        - "dev.bahl-habits.org"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+
+          image: harbor.teresol.com/teresol/redisserver:7.0
+          imagePullPolicy: Always
+          name: redis-cifdetail
+          ports:
+            - containerPort: 6379
+              name: http
+              protocol: TCP

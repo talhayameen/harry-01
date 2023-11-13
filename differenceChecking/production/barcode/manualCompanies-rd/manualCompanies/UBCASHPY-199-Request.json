@@ -1,0 +1,284 @@
+{
+  "CompanyName": "GCUF",
+  "MetaDataForDevelopment": "",
+  "billerUIConversion": {
+    "fieldsList": [
+      {
+        "VoucherNumberTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "numeric",
+          "isMandatory": false,
+          "label": "Voucher Number",
+          "maxlength": 15,
+          "mask": "",
+          "isDisabled": false,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "sequenceNO":1
+        },
+        "StudentNameTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "alphaNumericSpecial",
+          "isMandatory": false,
+          "label": "Name",
+          "maxlength": 60,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue":"customerName",
+          "sequenceNO":2
+        },
+        "BillingMonthDropDown": {
+          "id": 1,
+          "value": "",
+          "label": "Billing Month",
+          "list": "",
+          "isDisabled": false,
+          "isVisible": true,
+          "isMandatory": true,
+          "maxlength": 20,
+          "mask": "",
+          "eventType": "onChange",
+          "type": "dropDown",
+          "sequenceNO":3
+        },
+        "BillAmountToBePaidTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Net Amount",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "textAlign":"right",
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue":"amountAfterDueDate",
+          "sequenceNO":4
+        },
+        "DueDateTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "date",
+          "isMandatory": false,
+          "label": "Due Date",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue":"dueDate",
+          "sequenceNO":5
+        },
+        "CnicNumberTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "alphaNumericSpecial",
+          "isMandatory": false,
+          "label": "CNIC Number",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue":"custID",
+          "sequenceNO":6
+        },
+        "FetchDetailInformationButton": {
+          "id": 2,
+          "isDisabled": false,
+          "isVisible": true,
+          "sequenceNO":13
+        }
+      }
+    ]
+  },
+  "billerMatrixConversion": [
+    {
+      "header": {
+        "loginBranch": "",
+        "loginUserId": "",
+        "loginUserBatch": "",
+        "loginUserIp": "",
+        "activityCode": "UBCASHPY",
+        "subActivityCode": "", 
+        "loginBranchDate": "",
+        "currencyCode": "586"
+      },
+      "transactionDto": [
+        {
+          "billDetail": {
+            "companyId": "",
+            "companyName": "",
+            "barCode": "",
+            "paymentMode": "CASH", 
+            "companyBranchCode": "",
+            "companyAccountType": "",
+            "companyCustomerNumber": "",
+            "companyRunNumber": "",
+            "companyCheckDigit": "",
+            "accountName": "",
+            "debitBranchCode": "",
+            "debitAccountType": "",
+            "debitCustomerNumber": "",
+            "debitRunNumber": "",
+            "debitCheckDigit": "",
+            "chequeNumber": "",
+            "chequeAmount": "",
+            "totalBills": 1,
+            "slipNumber": "VoucherNumberTextBox",
+            "customerName": "StudentNameTextBox",
+            "validityDate": "",
+            "billingMonth": "BillingMonthDropDown",
+            "dueDate": "DueDateTextBox",
+            "afterDueDate": "",
+            "billingAmount": "BillAmountToBePaidTextBox",
+            "afterDueDateBillingAmount": "",
+            "transactionAmount": "BillAmountToBePaidTextBox",
+            "contractAccount": "",
+            "customerId": "CnicNumberTextBox",
+            "dealerCode": "",
+            "dealerName": "",
+            "productCode": "",
+            "productName": "",
+            "totalCharges": "",
+            "bankShares": "",
+            "totalAmount": "BillAmountToBePaidTextBox",
+            "address": "",
+            "extra1": "companyAbr",
+            "extra2": "loginBranchDateInDDMMYYY",
+            "extra3": "companyCode",
+            "extra4": "VoucherNumberTextBox",
+            "extra5": "",
+            "extra6": "",
+            "extra7": "",
+            "extra8": "",
+            "extra9": "",
+            "extra10": "",
+            "extra11": "",
+            "extra12": "",
+            "extra13": "",
+            "extra14": "",
+            "extra15": "",
+            "extra16": "",
+            "extra17": "",
+            "extra18": "",
+            "extra19": "",
+            "extra20": ""
+          },
+            "billingCompanyApi": {
+              "metadata": {
+                "source": {
+                  "identifier": "OBS_CC_UC7_FT_FT"
+                },
+                "destination": {
+                  "identifier": "GovernmentCollegeUniversityFaisalabadApiPaymentRequest"
+                },
+                "type": "realtime"
+              },
+              "data": {
+                "externalServiceApiRequest": {
+                  "companyId": "GCUF_PAY",
+                  "companyReferenceNumber": "",
+                  "invoiceNumber": "",
+                  "customerReferenceNumber": "VoucherNumberTextBox",
+                  "transactionAmount": "transactionAmountForGCUF",
+                  "financialInstitutionMnemonic": "",
+                  "transactionIdentifier": "loginBranchDateTimeFromFrontEnd",
+                  "customerAccountNumber": "",
+                  "purchaseOrderAmount": "",
+                  "contactNumber": "",
+                  "messageOrigniationAdviseNumber": "",
+                  "customerName": "StudentNameTextBox",
+                  "postingBy": "loginUserId",
+                  "uniqueIdentity": "",
+                  "branchNumber": "loginBranch",
+                  "branchDescription": "loginBranchName",
+                  "transactionDateTime": "transactionDateTime",
+                  "transactionTime":"transactionDateTime",
+                  "transactionDate": "transactionDate",
+                  "transactionAuthorizationId": "",
+                  "customerPaymentChoice": "CASH",
+                  "transactionEffectiveDate": "",
+                  "iso4217": "",
+                  "currencyTradeRate": "",
+                  "extra_1": "CnicNumberTextBox",
+                  "extra_2": "3027",
+                  "extra_3": "",
+                  "extra_4": "",
+                  "extra_5": "",
+                  "extra_6": "",
+                  "extra_7": "",
+                  "extra_8": "",
+                  "extra_9": "",
+                  "extra_10": "",
+                  "extra_11": "",
+                  "extra_12": "",
+                  "extra_13": "",
+                  "extra_14": "",
+                  "extra_15": ""
+                }
+              }
+            }
+        }
+      ]
+    }
+  ],
+  "API":{
+    "isInquiry":true,
+    "isPayment":true,
+
+    "apiInquiryRequestDto":{
+      "metaData": {
+          "source": {
+              "identifier": "OBS_CC_UC7_FT_FT"
+          },
+          "destination": {
+              "identifier": "GovernmentCollegeUniversityFaisalabadApiInquiryRequest"
+          },
+          "type": "realtime"
+      },
+      "data": {
+          "externalServiceApiRequest": {
+              "companyId": "GCUF_INQ",
+              "companyReferenceNumber": "",
+              "invoiceNumber": "",
+              "customerReferenceNumber": "VoucherNumberTextBox",
+              "transactionAmount": "0",
+              "financialInstitutionMnemonic": "",
+              "transactionIdentifier": "loginBranchDateTimeFromFrontEnd",
+              "transactionDateTime": "loginBranchDateTimeFromFrontEnd",
+              "extra_1": "",
+              "extra_2": "",
+              "extra_3": "",
+              "extra_4": "",
+              "extra_5": "",
+              "extra_6": "",
+              "extra_7": "",
+              "extra_8": "",
+              "extra_9": "",
+              "extra_10": "",
+              "extra_11": "",
+              "extra_12": "",
+              "extra_13": "",
+              "extra_14": "",
+              "extra_15": ""
+          }
+      }
+    },
+    "RequiredFieldsBeforeInquiry":{
+      "fieldsList":[
+        "BillingMonthDropDown","VoucherNumberTextBox"
+      ]
+    }
+  }
+}

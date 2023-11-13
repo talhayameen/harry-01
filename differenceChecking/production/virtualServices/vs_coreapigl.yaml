@@ -1,0 +1,38 @@
+
+##############################################
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapigl
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-GL/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapigl-crm          
+  - match:
+    - uri:
+        prefix: /core-api-GL/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapigl-teller
+  - match:
+    - uri:
+        prefix: /core-api-GL
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapigl

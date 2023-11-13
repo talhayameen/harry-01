@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tlr-prf-uc1-prf
+  name: tlr-prf-uc1-prf
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tlr-prf-uc1-prf
+  template:
+    metadata:
+      labels:
+        app: tlr-prf-uc1-prf
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/tlr-prf-uc1-prf:1.0.5
+          imagePullPolicy: Always
+          name: tlr-prf-uc1-prf
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tlr-prf-uc1-prf
+  name: tlr-prf-uc1-prf
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: tlr-prf-uc1-prf
+  type: ClusterIP
+
+
+
+#################################
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tlr-prf-uc1-prf
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/TLR_PRF_UC1_PRF`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: tlr-prf-uc1-prf
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

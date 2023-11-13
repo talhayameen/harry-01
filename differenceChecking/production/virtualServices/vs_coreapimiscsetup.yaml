@@ -1,0 +1,38 @@
+
+##############################################
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapimiscsetup
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-miscsetup/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapimiscsetup-crm
+  - match:
+    - uri:
+        prefix: /core-api-miscsetup/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapimiscsetup-teller
+  - match:
+    - uri:
+        prefix: /core-api-miscsetup
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapimiscsetup

@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsproductconditiondetail-crm
+  name: dataaccessmsproductconditiondetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      #nodePort: 31344
+  selector:
+    app: dataaccessmsproductconditiondetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsproductconditiondetail-crm
+  name: dataaccessmsproductconditiondetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsproductconditiondetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsproductconditiondetail-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsproductconditiondetail:0.1.7-crm
+          imagePullPolicy: Always
+          name: dataaccessmsproductconditiondetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

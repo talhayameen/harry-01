@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: esmeprc
+  name: esmeprc
+  namespace: esm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esmeprc
+  template:
+    metadata:
+      labels:
+        app: esmeprc
+    spec:
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: esm-configmap-fsm
+            - configMapRef:
+                name: esm-configmap-core
+
+          image: harbor.teresol.com/esm/esmeprc:esm-1.0.7
+          imagePullPolicy: Always
+          name: esmeprc
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: esmeprc
+  name: esmeprc
+  namespace: esm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080      
+  selector:
+    app: esmeprc
+  type: ClusterIP
+
+#########################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-esm-eprc
+  namespace: esm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/esm/esm-eprc`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: esmeprc
+          namespace: esm
+          port: 80
+  tls:
+    secretName: bahl-tls-secret
+
+  

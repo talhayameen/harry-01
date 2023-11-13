@@ -1,0 +1,21 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: cors-middleware
+  namespace: fsm
+spec:
+  headers:
+    accessControlAllowMethods:
+      - "GET"
+      - "OPTIONS"
+      - "POST"
+    accessControlAllowHeaders:
+      - "*"
+    accessControlAllowOriginList:
+      - "https://services.teresol-bahl.com"
+      - "https://services-crm.teresol-bahl.com"
+    accessControlExposeHeaders:
+      - "Access-Control-Allow-Origin"
+    accessControlMaxAge: 15
+    addVaryHeader: true

@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol     
+  labels:
+    app: dataaccessmsvalidatetransrestrict-crm
+  name: dataaccessmsvalidatetransrestrict-crm
+spec:
+  ports:
+    - name: http
+      #nodePort: 31399
+      port: 80
+      targetPort: 8080
+  selector:
+    app: dataaccessmsvalidatetransrestrict-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol     
+  labels:
+    app: dataaccessmsvalidatetransrestrict-crm
+  name: dataaccessmsvalidatetransrestrict-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsvalidatetransrestrict-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsvalidatetransrestrict-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsvalidatetransrestrict:1.0.2-crm
+          imagePullPolicy: Always
+          name: dataaccessmsvalidatetransrestrict-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol      
+  labels:
+    app: dataaccessmsvalidatecharges-crm
+  name: dataaccessmsvalidatecharges-crm
+spec:
+  ports:
+    - name: http
+      #nodePort: 31308
+      port: 80
+      targetPort: 8080
+  selector:
+    app: dataaccessmsvalidatecharges-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsvalidatecharges-crm
+  name: dataaccessmsvalidatecharges-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsvalidatecharges-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsvalidatecharges-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsvalidatecharges:0.1.2-crm
+          imagePullPolicy: Always
+          name: dataaccessmsvalidatecharges-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

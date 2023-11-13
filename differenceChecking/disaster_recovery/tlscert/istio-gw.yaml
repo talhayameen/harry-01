@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  generation: 3
+  name: istio-gateway
+  namespace: teresol
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - hosts:
+    - core.teresol-bahl.com
+    port:
+      name: http
+      number: 80
+      protocol: HTTP
+  - hosts:
+    - core.teresol-bahl.com
+    port:
+      name: https
+      number: 443
+      protocol: HTTPS
+    tls:
+      credentialName: bahl-tls-secret
+      mode: SIMPLE

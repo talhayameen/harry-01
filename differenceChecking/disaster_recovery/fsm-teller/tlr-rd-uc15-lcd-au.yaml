@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tlr-rd-uc15-lcd-au
+  name: tlr-rd-uc15-lcd-au
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tlr-rd-uc15-lcd-au
+  template:
+    metadata:
+      labels:
+        app: tlr-rd-uc15-lcd-au
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/tlr-rd-uc15-lcd-au:1.1.4
+          imagePullPolicy: Always
+          name: tlr-rd-uc15-lcd-au
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tlr-rd-uc15-lcd-au
+  name: tlr-rd-uc15-lcd-au
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: tlr-rd-uc15-lcd-au
+  type: ClusterIP
+
+
+
+#################################
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tlr-rd-uc15-lcd-au
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/TLR_RD_UC15_LCD_AU`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: tlr-rd-uc15-lcd-au
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

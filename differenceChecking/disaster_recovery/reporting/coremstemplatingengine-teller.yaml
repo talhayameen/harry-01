@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: reporting
+  labels:
+    app: coremstemplatingengine-teller
+  name: coremstemplatingengine-teller
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32739
+  selector:
+    app: coremstemplatingengine-teller
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: reporting
+  labels:
+    app: coremstemplatingengine-teller
+  name: coremstemplatingengine-teller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremstemplatingengine-teller
+  template:
+    metadata:
+      labels:
+        app: coremstemplatingengine-teller
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          env:
+            - name: DATAACCESS_REPORT_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmsreport-teller"
+            - name: DATAACCESS_REPORT_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: CORE_MS_REPORT_BIRT_WEBCLIENT_IP
+              value: "coremsreportbirt.reporting.svc.cluster.local"
+            - name: CORE_MS_REPORT_BIRT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: CORE_MS_REPORT_BIRT_QUARKUS_WEBCLIENT_IP
+              value: "coremsreportbirtquarkus.reporting.svc.cluster.local"
+            - name: CORE_MS_REPORT_BIRT_QUARKUS_WEBCLIENT_PORT
+              value: "80"
+
+            - name: CORE_MS_REPORT_BIRT_QUARKUS_POOLING_WEBCLIENT_IP
+              value: "coremsreportbirtquarkuspooling.reporting.svc.cluster.local"
+            - name: CORE_MS_REPORT_BIRT_QUARKUS_POOLING_WEBCLIENT_PORT
+              value: "80"
+          
+          image: harbor.teresol.com/reporting/coremstemplatingengine:0.2.3-teller
+          imagePullPolicy: Always
+          name: coremstemplatingengine-teller
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+

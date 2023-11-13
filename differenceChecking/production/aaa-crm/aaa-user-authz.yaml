@@ -1,0 +1,91 @@
+#################
+# AAA user-authz
+#################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: aaa-user-authz-service
+  name: aaa-user-authz-service
+  namespace: aaa
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      nodePort: 32410
+  selector:
+    app: aaa-user-authz
+  type: NodePort
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aaa-user-authz
+  labels:
+    app: aaa-user-authz
+  namespace: aaa
+spec:
+  
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aaa-user-authz
+  template:
+    metadata:
+      labels:
+        app: aaa-user-authz
+    spec:
+      hostAliases:
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+      containers:
+        - name: aaa-user-authz
+          image: harbor.teresol.com/aaa/aaa-user-authz:v1.3.23
+          securityContext:
+            runAsUser: 0
+          env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: OIDC_AUTH_SERVER_URL
+              value: "https://services.teresol-bahl.com/auth/realms/ahbs-realm/"  # Keycloak URL which is externally accessible, must be same as frontend
+            - name: DATA_ACCESS_URL
+              value: "http://aaa-data-access-service:8080"
+
+            - name: DATAACCESS_MS_VALIDATE_BATCH
+              value: "http://dataaccessmsvalidatebatch-crm.teresol.svc.cluster.local:80"
+
+            - name: CLIENT_ID
+              value: "aaa-user-authz"
+
+            - name: CREDENTIALS_SECRET
+              value: "joKvczCUnKWMNoYYayG40OTgzCi8aPlX" # Replace with aaa-user-authz client secret
+
+            - name: VERSION
+              value: "v3"
+
+            - name: ENVIRONMENT
+              value: "Integration"
+
+          ports:
+            - name: http
+              containerPort: 8080

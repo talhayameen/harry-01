@@ -1,0 +1,278 @@
+{
+  "CompanyName": "KESC",
+  "MetaDataForDevelopment": "",
+  "billerUIConversion": {
+    "fieldsList": [
+      {
+        "BillingMonthDropDown": {
+          "id": 1,
+          "value": "",
+          "dataType": "alphabetOnly",
+          "isMandatory": true,
+          "label": "Billing Month",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": false,
+          "isVisible": true,
+          "eventType": "onChange",
+          "type": "dropDown",
+          "itemValue": "item1",
+          "sequenceNO":1
+        },
+        "ConsumerNumberTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "alphaNumeric",
+          "isMandatory": false,
+          "label": "Consumer No-KESC",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "item5",
+          "sequenceNO":3
+        },
+        "BillingAmountTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Billing Amount",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "textAlign":"right",
+          "type": "textBox",
+          "itemValue": "item2",
+          "sequenceNO":5
+        },
+        "AmountAfterDueDateTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Amount After Due Date",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "textAlign":"right",
+          "type": "textBox",
+          "itemValue": "item4",
+          "sequenceNO":2
+        },
+        "BillAmountToBePaidTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Bill Amount To be Paid",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "textAlign":"right",
+          "type": "textBox",
+          "sequenceNO":4
+        },
+        "DueDateTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "date",
+          "isMandatory": false,
+          "label": "Due Date",
+          "maxlength": 20,
+          "mask": "##/##/####",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "item3",
+          "sequenceNO":6
+        },
+        "ContractAccountTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "alphaNumeric",
+          "isMandatory": false,
+          "label": "Contract Account",
+          "maxlength": "20",
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "item8",
+          "sequenceNO":7
+        },
+        "CustomerIdTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "alphaNumericSpecial",
+          "isMandatory": false,
+          "label": "Customer Id",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": false,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "item7",
+          "sequenceNO":8
+        },
+        "ValidityDateTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "alphaNumeric",
+          "isMandatory": false,
+          "label": "Validity Date DD/MM/YY",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "sequenceNO":9
+          
+        }
+      }
+    ]
+  },
+  "billerMatrixConversion": [
+    {
+      "header": {
+        "loginBranch": "",
+        "loginUserId": "",
+        "loginUserBatch": "",
+        "loginUserIp": "",
+        "activityCode": "UBCASHPY",
+        "subActivityCode": "", 
+        "loginBranchDate": "",
+        "currencyCode": "586"
+      },
+      "transactionDto": [
+        {
+          "billDetail": {
+            "companyId": "",
+            "companyName": "",
+            "barCode": "",
+            "paymentMode": "CASH", 
+            "companyBranchCode": "",
+            "companyAccountType": "",
+            "companyCustomerNumber": "",
+            "companyRunNumber": "",
+            "companyCheckDigit": "",
+            "accountName": "",
+            "debitBranchCode": "",
+            "debitAccountType": "",
+            "debitCustomerNumber": "",
+            "debitRunNumber": "",
+            "debitCheckDigit": "",
+            "chequeNumber": "",
+            "chequeAmount": "",
+            "totalBills": 1,
+            "slipNumber": "ConsumerNumberTextBox",
+            "customerName": "",
+            "validityDate": "ValidityDateTextBox",
+            "billingMonth": "BillingMonthDropDown",
+            "dueDate": "DueDateTextBox",
+            "afterDueDate": "",
+            "billingAmount": "BillingAmountTextBox",
+            "afterDueDateBillingAmount": "AmountAfterDueDateTextBox",
+            "transactionAmount": "BillAmountToBePaidTextBox",
+            "contractAccount": "ContractAccountTextBox",
+            "customerId": "CustomerIdTextBox",
+            "dealerCode": "",
+            "dealerName": "",
+            "productCode": "",
+            "productName": "",
+            "address": "",
+            "extra1": "",
+            "extra2": "",
+            "extra3": "",
+            "extra4": "",
+            "extra5": "",
+            "extra6": "",
+            "extra7": "",
+            "extra8": "",
+            "extra9": "",
+            "extra10": "",
+            "extra11": "",
+            "extra12": "",
+            "extra13": "",
+            "extra14": "",
+            "extra15": "",
+            "extra16": "",
+            "extra17": "",
+            "extra18": "",
+            "extra19": "",
+            "extra20": ""
+          },
+          "billingCompanyApi": {
+            "metadata": {
+              "source": {
+                "identifier": "OBS_CC_UC7_FT_FT"
+              },
+              "destination": {
+                "identifier": "KarachiElectricApiPaymentRequest"
+              },
+              "type": "realtime"
+            },
+            "data": {
+              "externalServiceApiRequest": {
+                "companyId": "KE_PAY",
+                "companyReferenceNumber": "",
+                "invoiceNumber": "",
+                "customerReferenceNumber": "ConsumerNumberTextBox",
+                "transactionAmount": "BillAmountToBePaidTextBox",
+                "financialInstitutionMnemonic": "",
+                "transactionIdentifier": "loginBranchDateTimeFromFrontEnd",
+                "customerAccountNumber": "ContractAccountTextBox",
+                "purchaseOrderAmount": "",
+                "contactNumber": "",
+                "messageOrigniationAdviseNumber": "",
+                "customerName": "",
+                "postingBy": "loginUserId",
+                "uniqueIdentity": "",
+                "branchNumber": "loginBranch",
+                "branchDescription": "loginBranchName",
+                "transactionDateTime": "loginBranchDateTimeFromFrontEnd",
+                "transactionDate": "transactionDate",
+                "transactionTime":"",
+                "transactionAuthorizationId": "",
+                "customerPaymentChoice": "0",
+                "transactionEffectiveDate": "valueDateForKE",
+                "iso4217": "",
+                "currencyTradeRate": "",
+                "extra_1": "yearIn2DigitsAndMonth",
+                "extra_2": "BillingAmountTextBox",
+                "extra_3": "AmountAfterDueDateTextBox",
+                "extra_4": "loginUserId",
+                "extra_5": "B",
+                "extra_6": "CustomerIdTextBox",
+                "extra_8": "",
+                "extra_9": "",
+                "extra_10": "",
+                "extra_11": "",
+                "extra_12": "",
+                "extra_13": "",
+                "extra_14": "",
+                "extra_15": ""
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "API":{
+    "isInquiry":false,
+    "isPayment":true
+  }
+}

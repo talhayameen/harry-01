@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels: 
+    app: tlr-tf-uc65-tf-pendingcharges-recover
+  name: tlr-tf-uc65-tf-pendingcharges-recover
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+     app: tlr-tf-uc65-tf-pendingcharges-recover
+  template:
+    metadata:
+      labels: 
+        app: tlr-tf-uc65-tf-pendingcharges-recover
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/tlr-tf-uc65-tf-pendingcharges-recover:1.4.9
+          imagePullPolicy: Always
+          name: tlr-tf-uc65-tf-pendingcharges-recover
+          ports:
+            - containerPort: 3500
+#########################################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels: 
+     app: tlr-tf-uc65-tf-pendingcharges-recover
+  name: tlr-tf-uc65-tf-pendingcharges-recover
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector: 
+    app: tlr-tf-uc65-tf-pendingcharges-recover
+  type: ClusterIP
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tlr-tf-uc65-tf-pendingcharges-recover
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/TLR_TF_UC65_TF_PendingChrges_Recover_Charges`)  
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: tlr-tf-uc65-tf-pendingcharges-recover
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

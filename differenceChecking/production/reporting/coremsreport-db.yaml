@@ -1,0 +1,70 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: reporting
+  labels:
+    app: coremsreport-db
+  name: coremsreport-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremsreport-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: coremsreport-db
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+            - name: MARIADB_DATABASE
+              value: bitnami_jasperreports
+            - name: MARIADB_USER
+              value: bn_jasperreports
+          image: harbor.teresol.com/teresol/coremsreportdb:1.0.4
+          name: coremsreport-db
+          ports:
+            - containerPort: 3306
+          resources: {}
+          volumeMounts:
+            - mountPath: /bitnami/coremsreport
+              name: coremsreport-db-claim
+      restartPolicy: Always
+      volumes:
+        - name: coremsreport-db-claim
+          persistentVolumeClaim:
+            claimName: coremsreport-db-claim
+############################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: reporting
+  labels:
+    app: coremsreport-db
+  name: coremsreport-db
+spec:
+  ports:
+    - name: http
+      port: 3306
+      targetPort: 3306
+  selector:
+    app: coremsreport-db

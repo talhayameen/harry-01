@@ -1,0 +1,137 @@
+
+#################
+# Keycloak
+#################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: keycloak
+  name: keycloak
+  namespace: aaa
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      nodePort: 32611
+  selector:
+    app: keycloak
+  type: NodePort
+
+########################################
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+  namespace: aaa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      hostAliases:
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      containers:
+        - name: keycloak
+          image: harbor.teresol.com/aaa/teresol-keycloak:3.0.5
+          resources: {}
+          env:
+            - name: KEYCLOAK_ADMIN
+              value: "admin"
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              value: "admin"
+            - name: KC_DB_URL
+              value: "jdbc:postgresql://keycloak-postgres/keycloak"
+            - name: KC_DB
+              value: "postgres"
+            - name: KC_DB_USERNAME
+              value: "keycloak"
+            - name: KC_DB_PASSWORD
+              value: "password"
+            - name: KC_LOG_LEVEL
+              value: "DEBUG"
+            - name: KEYCLOAK_LOGLEVEL
+              value: "DEBUG"
+            - name: ROOT_LOGLEVEL
+              value: "DEBUG"
+            - name: WILDFLY_LOGLEVEL
+              value: "DEBUG"
+            - name: JAVA_OPTS_APPEND
+              value: "-DdataAccessUrl=http://aaa-data-access-service:8080"
+            - name: KC_HOSTNAME
+              value: "services.teresol-bahl.com"
+            - name: KC_PROXY
+              value: "edge"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /auth/realms/master
+              port: 8080
+
+##########################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-keycloak
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/auth/realms/ahbs-realm/protocol/openid-connect/userinfo`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: aaa-user-authz-service
+          namespace: aaa
+          port: 8080
+
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/auth/realms/ahbs-realm/`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+        - name: https-redirect
+          namespace: fsm
+      services:
+        - kind: Service
+          name: keycloak
+          namespace: aaa
+          port: 8080
+
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/auth`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+        - name: https-redirect
+          namespace: fsm
+      services:
+        - kind: Service
+          name: keycloak
+          namespace: aaa
+          port: 8080
+  tls:
+    secretName: bahl-tls-secret

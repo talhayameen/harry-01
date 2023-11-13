@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsaccountopeningstatusdetail-crm
+  name: dataaccessmsaccountopeningstatusdetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32428
+  selector:
+    app: dataaccessmsaccountopeningstatusdetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsaccountopeningstatusdetail-crm
+  name: dataaccessmsaccountopeningstatusdetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsaccountopeningstatusdetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsaccountopeningstatusdetail-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsaccountopeningstatusdetail:0.0.3-crm
+          imagePullPolicy: Always
+          name: dataaccessmsaccountopeningstatusdetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

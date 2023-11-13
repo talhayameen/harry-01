@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsaccounttermdetail-crm
+  name: dataaccessmsaccounttermdetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31092
+  selector:
+    app: dataaccessmsaccounttermdetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsaccounttermdetail-crm
+  name: dataaccessmsaccounttermdetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsaccounttermdetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsaccounttermdetail-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsaccounttermdetail:0.0.3-crm
+          imagePullPolicy: Always
+          name: dataaccessmsaccounttermdetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

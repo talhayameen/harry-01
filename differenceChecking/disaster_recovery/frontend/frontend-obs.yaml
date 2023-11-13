@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bahl-frontend-obs
+  name: bahl-frontend-obs
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bahl-frontend-obs
+  template:
+    metadata:
+      labels:
+        app: bahl-frontend-obs
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FE
+      containers:
+        - image: harbor.teresol.com/frontend/fe:1.10.8.obs.integration.3
+          imagePullPolicy: Always
+          name: bahl-frontend-obs
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: bahl-frontend-obs
+  namespace: fsm
+  name: bahl-frontend-obs
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 80
+  selector:
+    app: bahl-frontend-obs
+  type: ClusterIP

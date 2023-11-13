@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsexceptiondetail-crm
+  name: dataaccessmsexceptiondetail-crm
+spec:
+  ports:
+    - name: http
+      #nodePort: 31303
+      port: 80
+      targetPort: 8080
+  selector:
+    app: dataaccessmsexceptiondetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsexceptiondetail-crm
+  name: dataaccessmsexceptiondetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsexceptiondetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsexceptiondetail-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsexceptiondetail:1.0.5-crm
+          imagePullPolicy: Always
+          name: dataaccessmsexceptiondetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

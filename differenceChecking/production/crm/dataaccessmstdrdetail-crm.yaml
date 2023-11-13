@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmstdrdetail-crm
+  name: dataaccessmstdrdetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 30199
+  selector:
+    app: dataaccessmstdrdetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmstdrdetail-crm
+  name: dataaccessmstdrdetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmstdrdetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmstdrdetail-crm
+    spec:
+      #knodeSelector:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmstdrdetail:0.1.8-crm
+          imagePullPolicy: Always
+          name: dataaccessmstdrdetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsphoenixcarddetail-crm
+  name: dataaccessmsphoenixcarddetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31770
+  selector:
+    app: dataaccessmsphoenixcarddetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsphoenixcarddetail-crm
+  name: dataaccessmsphoenixcarddetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsphoenixcarddetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsphoenixcarddetail-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsphoenixcarddetail:1.0.2-crm
+          imagePullPolicy: Always
+          name: dataaccessmsphoenixcarddetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

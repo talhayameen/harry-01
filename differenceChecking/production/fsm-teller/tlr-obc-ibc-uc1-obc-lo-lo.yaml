@@ -1,0 +1,82 @@
+---
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+  labels:
+    app: tlr-obc-ibc-uc1-obc-lo-lo
+  name: tlr-obc-ibc-uc1-obc-lo-lo
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tlr-obc-ibc-uc1-obc-lo-lo
+  template:
+    metadata:
+      labels:
+        app: tlr-obc-ibc-uc1-obc-lo-lo
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/tlr-obc-ibc-uc1-obc-lo-lo:1.4.0
+          imagePullPolicy: Always
+          name: tlr-obc-ibc-uc1-obc-lo-lo
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tlr-obc-ibc-uc1-obc-lo-lo
+  name: tlr-obc-ibc-uc1-obc-lo-lo
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: tlr-obc-ibc-uc1-obc-lo-lo
+  type: ClusterIP
+
+#################################
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tlr-obc-ibc-uc1-obc-lo-lo
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/tlr_obc_ibc_uc1_obc_lo_lo`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: tlr-obc-ibc-uc1-obc-lo-lo
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

@@ -1,0 +1,65 @@
+#################
+# AAA data-access
+#################
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: aaa-data-access-service
+  labels:
+    app: aaa-data-access-service
+  namespace: aaa
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: aaa-data-access
+
+############################################
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aaa-data-access
+  labels:
+    app: aaa-data-access
+  namespace: aaa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aaa-data-access
+  template:
+    metadata:
+      labels:
+        app: aaa-data-access
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          env:
+            - name: DATAACCESS_MS_BRANCH_DETAIL 
+              value: "http://dataaccessmsbranchdetail-crm.teresol.svc.cluster.local:80" 
+
+            - name: DATAACCESS_MS_VALIDATE_BRANCH
+              value: "http://dataaccessmsvalidatebranch-crm.teresol.svc.cluster.local:80"
+
+            - name: BAHRAIN_DB_NAME
+              value: "AHABIBBR"
+
+            - name: KARACHI_MAIN_DATABASE_IP
+              value: "10.90.95.74"
+            - name: ISLAMIC_DATABASE_IP
+              value: "10.90.95.73"
+
+          name: aaa-data-access
+          image: harbor.teresol.com/aaa/aaa-data-access:v1.2.2
+          ports:
+            - name: http
+              containerPort: 8080

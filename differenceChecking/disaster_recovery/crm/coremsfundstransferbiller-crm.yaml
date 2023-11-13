@@ -1,0 +1,259 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coremsfundstransferbiller-crm
+  name: coremsfundstransferbiller-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 30394
+  selector:
+    app: coremsfundstransferbiller-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coremsfundstransferbiller-crm
+  name: coremsfundstransferbiller-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremsfundstransferbiller-crm
+  template:
+    metadata:
+      labels:
+        app: coremsfundstransferbiller-crm
+    spec:
+      #nodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+
+            - name: VALIDATE_TRANSACTION_IP
+              value: "dataaccessmsvalidatetransaction-crm.teresol.svc.cluster.local"
+            - name: VALIDATE_TRANSACTION_PORT
+              value: "80"
+
+            - name: CREDIT_CARD_DATAACCESS_IP
+              value: "dataaccessmscarddetail-crm.teresol.svc.cluster.local"
+            - name: CREDIT_CARD_DATAACCESS_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_CANCELFUNDTRANSFER_IP
+              value: "dataaccessmscancelfundtransfer-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_CANCELFUNDTRANSFER_PORT
+              value: "80"
+
+            - name: DATAACCESS_EXECUTE_FUNDSTRANSFER_IP
+              value: "dataaccessmsexecutefundstransferbiller-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_EXECUTE_FUNDSTRANSFER_PORT
+              value: "80"
+
+            - name: VALIDATE_USER_DATAACCESS_IP
+              value: "aaa-validate-user-data-access-service-crm.aaa.svc.cluster.local"
+
+            - name: VALIDATE_USER_DATAACCESS_PORT
+              value: "8080"
+
+            - name: VALIDATE_ACCOUNT_TYPE_DATAACCESS_IP
+              value: "dataaccessmsvalidateproduct-crm.teresol.svc.cluster.local"
+
+            - name: VALIDATE_ACCOUNT_TYPE_DATAACCESS_PORT
+              value: "80"
+
+            - name: FUNDS_TRANSFER_DETAIL_IP
+              value: "dataaccessmsfundstransferdetail-crm.teresol.svc.cluster.local"
+            - name: FUNDS_TRANSFER_DETAIL_PORT
+              value: "80"
+
+            - name: BRANCH_DATAACCESS_IP
+              value: "dataaccessmsvalidatebranch-crm.teresol.svc.cluster.local"
+            - name: BRANCH_DATAACCESS_PORT
+              value: "80"
+
+            - name: BRANCH_DATE_IP
+              value: "dataaccessmsbranchdetail-crm.teresol.svc.cluster.local"
+            - name: BRANCH_DATE_PORT
+              value: "80"
+
+            - name: WHT_DATAACCESS_IP
+              value: "dataaccessmswhtdetail-crm.teresol.svc.cluster.local"
+            - name: WHT_DATAACCESS_PORT
+              value: "80"
+            
+            - name: AUTHORIZE_MATRIX_DATAACCESS_IP
+              value: "dataaccessmsauthorizematrix-crm.teresol.svc.cluster.local"
+            - name: AUTHORIZE_MATRIX_DATAACCESS_PORT
+              value: "80"
+
+            - name: GL_CREDIT_CARD_DATAACCESS_IP
+              value: "dataaccessmscardgldetail-crm.teresol.svc.cluster.local"
+            - name: GL_CREDIT_CARD_DATAACCESS_PORT
+              value: "80"
+
+            - name: AUTHORIZE_FUNDS_TRANSFER_DATAACCESS_IP
+              value: "dataaccessmsauthorizefundstransferbiller-crm.teresol.svc.cluster.local"
+            - name: AUTHORIZE_FUNDS_TRANSFER_DATAACCESS_PORT
+              value: "80"
+
+            - name: INSTRUEMENT_DATAACCESS_IP
+              value: "dataaccessmsinstrument-crm.teresol.svc.cluster.local"
+            - name: INSTRUEMENT_DATAACCESS_PORT
+              value: "80"
+
+            - name: ACCOUNT_DATAACCESS_IP
+              value: "dataaccessmsaccountdetail-crm.teresol.svc.cluster.local"
+            - name: ACCOUNT_DATAACCESS_PORT
+              value: "80"
+
+            - name: VOUCHER_DETAIL_IP
+              value: "dataaccessmsvoucherdetail-crm.teresol.svc.cluster.local"
+            - name: VOUCHER_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_GLDETAIL_PORT
+              value: "80"
+            - name: DATAACCESS_MS_GLDETAIL_IP
+              value: "dataaccessmsgl-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_CUSTOMER_DETAIL_IP
+              value: "dataaccessmscustomerdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_CUSTOMER_DETAIL_PORT
+              value: "80"
+    
+            - name: DATAACCESS_MS_CURRENCYDETAIL_IP
+              value: "dataaccessmscurrencydetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_CURRENCYDETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_OPEN_BATCH_IP
+              value: "dataaccessmsopenbatch-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_OPEN_BATCH_PORT
+              value: "80"
+
+            - name: CORE_API_USER_IP
+              value: "aaa-user-api-service-crm.aaa.svc.cluster.local"
+            - name: CORE_API_USER_PORT
+              value: "8080"
+
+            - name: PRODUCT_DETAIL_DATAACCESS_IP
+              value: "dataaccessmsproductdetail-crm.teresol.svc.cluster.local"
+            - name: PRODUCT_DETAIL_DATAACCESS_PORT
+              value: "80"
+
+            - name: PRODUCT_CONDITION_DATAACCESS_IP
+              value: "dataaccessmsproductconditiondetail-crm.teresol.svc.cluster.local"
+            - name: PRODUCT_CONDITION_DATAACCESS_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_WHT_IP
+              value: "coremswht-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_WHT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATEUSER_IP
+              value: "aaa-validate-user-data-access-service-crm.aaa.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATEUSER_PORT
+              value: "8080"
+
+            - name: DATAACCESS_MS_USERDETAIL_IP
+              value: "aaa-user-detail-data-access-service-crm.aaa.svc.cluster.local"
+            - name: DATAACCESS_MS_USERDETAIL_PORT
+              value: "8080"
+
+
+            - name: DATAACCESS_MS_WHT_DOCUMENT_DETAIL_IP
+              value: "dataaccessmswhtdocumentdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_WHT_DOCUMENT_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_WHT_IP
+              value: "dataaccessmsvalidatewht-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_WHT_PORT
+              value: "80"
+       
+            - name: LOG_LEVEL
+              value: "DEBUG" 
+
+            - name: CORE_MS_EXTERNAL_SERVICE_IP
+              value: "coremsexternalservice-crm.teresol.svc.cluster.local"
+            - name: CORE_MS_EXTERNAL_SERVICE_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_ACTIVITY_DETAIL_IP
+              value: "dataaccessmsvalidateactivitydetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_ACTIVITY_DETAIL_PORT
+              value: "80"
+
+            - name: CORE_MS_FUNDSTRANSFER_ROOT_PATH
+              value: "core-ms-fundsTransferBiller/v3"
+
+              #- name: DA_EXECUTEFUNDSTRANSFER_WEBCLIENT_RTIMEOUT
+              #value: "70000"
+
+              #- name: DA_AUTHORIZEFUNDSTRANSFER_WEBCLIENT_RTIMEOUT
+              #value: "70000"
+
+              #- name: DA_EXECUTE_FUNDSTRANSFER_BASE_URL
+              #value: "dataaccess-ms-fundsTransferBiller/v3"
+
+              #- name: DA_AUTHORIZE_FUNDSTRANSFER_IP
+              #value: "dataaccessmsauthorizefundstransferbiller-crm.teresol.svc.cluster.local"
+
+              #- name: DA_AUTHORIZE_FUNDSTRANSFER_PORT
+              #value: "80"
+
+              
+          image: harbor.teresol.com/teresol/coremsfundstransferbiller:1.1.1-teller
+          imagePullPolicy: Always
+          name: coremsfundstransferbiller-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+
+#####################################
+

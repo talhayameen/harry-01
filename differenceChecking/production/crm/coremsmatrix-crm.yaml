@@ -1,0 +1,279 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coremsmatrix-crm
+  name: coremsmatrix-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31463
+  selector:
+    app: coremsmatrix-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coremsmatrix-crm
+  name: coremsmatrix-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremsmatrix-crm
+  template:
+    metadata:
+      labels:
+        app: coremsmatrix-crm
+    spec:
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+
+            - name: DATAACCESS_MS_CURRENCY_DETAIL_IP
+              value: "dataaccessmscurrencydetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_CURRENCY_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_PRODUCT_DETAIL_IP
+              value: "dataaccessmsproductdetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_PRODUCT_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_GL_DETAIL_IP
+              value: "dataaccessmsgl-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_GL_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_CALCULATE_DP_IP
+              value: "dataaccessmscalculatedp-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_CALCULATE_DP_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_USER_IP
+              value: "aaa-validate-user-data-access-service-crm.aaa.svc.cluster.local"
+
+            - name: DATAACCESS_MS_VALIDATE_USER_PORT
+              value: "8080"
+
+            - name: DATAACCESS_MS_CANCEL_MATRIX_IP
+              value: "dataaccessmscancelmatrix-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_CANCEL_MATRIX_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_USER_DETAIL_IP
+              value: "aaa-user-detail-data-access-service-crm.aaa.svc.cluster.local"
+
+            - name: DATAACCESS_MS_USER_DETAIL_PORT
+              value: "8080"
+
+            - name: DATAACCESS_MS_CREATE_MATRIX_IP
+              value: "dataaccessmscreatematrix-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_CREATE_MATRIX_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_PRODUCT_CONDITIONS_DETAIL_IP
+              value: "dataaccessmsproductconditiondetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_PRODUCT_CONDITIONS_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_BRANCH_IP
+              value: "dataaccessmsvalidatebranch-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_VALIDATE_BRANCH_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_ACCOUNT_DETAIL_IP
+              value: "dataaccessmsaccountdetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_ACCOUNT_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_LIMIT_IP
+              value: "dataaccessmsvalidatelimit-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_VALIDATE_LIMIT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_BATCH_IP
+              value: "dataaccessmsvalidatebatch-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_VALIDATE_BATCH_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_GET_BRANCH_IP
+              value: "dataaccessmsbranchdetail-crm.teresol.svc.cluster.local"
+
+            - name: DATAACCESS_MS_GET_BRANCH_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_WHT_THRESHOLD_DETAIL_IP
+              value: "dataaccessmswhtthresholddetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_WHT_THRESHOLD_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_WHT_IP
+              value: "coremswht-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_WHT_PORT
+              value: "80"
+          
+            - name: DATAACCESS_MS_CUSTOMER_DETAIL_IP
+              value: "dataaccessmscustomerdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_CUSTOMER_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_WHT_DOCUMENT_DETAIL_IP
+              value: "dataaccessmswhtdocumentdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_WHT_DOCUMENT_DETAIL_PORT
+              value: "80"
+
+            - name: CORE_MS_WHT_IP
+              value: "coremswht-crm.teresol.svc.cluster.local"
+            - name: CORE_MS_WHT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_WHT_IP
+              value: "dataaccessmsvalidatewht-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_WHT_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_TRANSACTION_STATUS_IP
+              value: "dataaccessmsvalidatetransaction-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_TRANSACTION_STATUS_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_CUSTOMER_DETAIL_CNIC_MISSING_IP
+              value: "dataaccessmsvalidatecustomer-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_CUSTOMER_DETAIL_CNIC_MISSING_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_HASH_BALANCE_IP
+              value: "dataaccessmsvalidatehashseed-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_HASH_BALANCE_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_GET_CHARGE_DETAIL_IP 
+              value: "dataaccessmschargesdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_GET_CHARGE_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_CUSTOMER_LIMIT_DETAIL_IP
+              value: "dataaccessmscustomerdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_CUSTOMER_LIMIT_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_FT_DETAIL_IP
+              value: "dataaccessmsfundstransferdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_FT_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_GET_COMPANY_ACCOUNT_DETAIL_IP
+              value: "dataaccessmscompanyaccountdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_GET_COMPANY_ACCOUNT_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_ACTIVITY_CODE_IP
+              value: "dataaccessmsvalidateactivitydetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_ACTIVITY_CODE_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_COMPANY_DETAIL_IP
+              value: "dataaccessmsvalidatecompany-crm.teresol.svc.cluster.local"
+            - name:  DATAACCESS_MS_VALIDATE_COMPANY_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_GET_COMPANY_DETAIL_IP
+              value: "dataaccessmsbilldetail-crm.teresol.svc.cluster.local"
+            - name:  DATAACCESS_MS_GET_COMPANY_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_CARD_GL_DETAIL_IP
+              value: "dataaccessmscardgldetail-crm.teresol.svc.cluster.local"
+            - name:  DATAACCESS_MS_CARD_GL_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_INSTRUMENT_DETAIL_IP
+              value: "dataaccessmsvalidateinstrument-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_VALIDATE_INSTRUMENT_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_VALIDATE_PRODUCT_IP
+              value: "dataaccessmsvalidateproduct-crm"
+            - name: DATAACCESS_MS_VALIDATE_PRODUCT_PORT
+              value: "80"
+            
+            - name: DATAACCESS_MS_PARAMS_DETAIL_IP
+              value: "dataaccessmsparamsdetails-crm"
+            - name: DATAACCESS_MS_PARAMS_DETAIL_PORT
+              value: "80"
+
+            - name: DATAACCESS_MS_COMPANY_DETAIL_IP
+              value: "dataaccessmscompanydetail-crm"
+            - name: DATAACCESS_MS_COMPANY_DETAIL_PORT
+              value: "80"
+            
+            - name: DATAACCESS_GET_IMPEX_ACCOUNT_IP
+              value: "dataaccessmsaccountimpexdetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_GET_IMPEX_ACCOUNT_PORT
+              value: "80"
+
+            - name: REDIS_IP
+              value: "redisserver.teresol.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+
+
+          image: harbor.teresol.com/teresol/coremsmatrix:1.1.2-crm
+          imagePullPolicy: Always
+          name: coremsmatrix-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+#####################################

@@ -1,0 +1,242 @@
+{
+  "CompanyName": "GEPCO",
+  "MetaDataForDevelopment": "",
+  "billerUIConversion": {
+    "fieldsList": [
+      {
+        "BillingMonthDropDown": {
+          "id": 1,
+          "value": "",
+          "dataType": "alphabetOnly",
+          "isMandatory": true,
+          "label": "Billing Month",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onChange",
+          "type": "dropDown",
+          "itemValue": "billingMonth"
+        },
+        "CustomerNameTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "alphaNumericSpecial",
+          "isMandatory": false,
+          "label": "Consumer Name",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue":"name",
+          "sequenceNO":2
+        },
+        "ConsumerNumberTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "alphaNumericSpecial",
+          "isMandatory": true,
+          "label": "Consumer No-GEPCO",
+          "maxlength": 15,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue":"referenceNumber",
+          "sequenceNO":3
+        },
+        "AmountAfterDueDateTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Amount After Due Date",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "textAlign":"right",
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "amountAfterDueDate",
+          "sequenceNO":4
+        },
+        "BillAmountToBePaidTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Billing Amount",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "textAlign":"right",
+          "eventType": "onBlur",
+          "type": "textBox",
+          "sequenceNO":5
+        },
+        "WithinDueDateAmountTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Amount Within Due Date",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "amountBeforeDueDate",
+          "textAlign": "right",
+          "sequenceNO": 6
+        },
+        "FatherNameTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "alphaNumericSpecial",
+          "isMandatory": false,
+          "label": "Father Name",
+          "maxlength": "20",
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "fatherName",
+          "sequenceNO": 7
+        },
+        "CustomerIdTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "alphaNumeric",
+          "isMandatory": false,
+          "label": "Customer Id",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": false,
+          "isVisible": false,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "item7",
+          "sequenceNO": 7
+        },
+        "DueDateTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "date",
+          "isMandatory": false,
+          "label": "Due Date",
+          "maxlength": 20,
+          "mask": "##/##/####",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "dueDate",
+          "sequenceNO":8
+        }
+      }
+    ]
+  },
+  "billerMatrixConversion": [
+    {
+      "header": {
+        "loginBranch": "",
+        "loginUserId": "",
+        "loginUserBatch": "",
+        "loginUserIp": "",
+        "activityCode": "UBPFTRCV",
+        "subActivityCode": "",
+        "loginBranchDate": "",
+        "currencyCode": "586"
+      },
+      "transactionDto": [
+        {
+          "billDetail": {
+            "companyId": "",
+            "companyName": "",
+            "barCode": "",
+            "paymentMode": "CHEQUE",
+            "companyBranchCode": "",
+            "companyAccountType": "",
+            "companyCustomerNumber": "",
+            "companyRunNumber": "",
+            "companyCheckDigit": "",
+            "accountName": "",
+            "debitBranchCode": "",
+            "debitAccountType": "",
+            "debitCustomerNumber": "",
+            "debitRunNumber": "",
+            "debitCheckDigit": "",
+            "chequeNumber": "",
+            "chequeAmount": "",
+            "totalBills": 1,
+            "slipNumber": "ConsumerNumberTextBox",
+            "customerName": "CustomerNameTextBox",
+            "validityDate": "",
+            "billingMonth": "BillingMonthDropDown",
+            "dueDate": "DueDateTextBox",
+            "afterDueDate": "",
+            "billingAmount": "BillAmountToBePaidTextBox",
+            "afterDueDateBillingAmount": "AmountAfterDueDateTextBox",
+            "transactionAmount": "BillAmountToBePaidTextBox",
+            "contractAccount": "",
+            "customerId": "CustomerIdTextBox",
+            "dealerCode": "",
+            "dealerName": "",
+            "productCode": "",
+            "productName": "",
+            "address": "",
+            "extra1": "FatherNameTextBox",
+            "extra2": "level1",
+            "extra3": "level2",
+            "extra4": "level3",
+            "extra5": "level4",
+            "extra6": "billerUniqueKey",
+            "extra7": "",
+            "extra8": "",
+            "extra9": "",
+            "extra10": "",
+            "extra11": "NarrationTextBox",
+            "extra12": "",
+            "extra13": "",
+            "extra14": "",
+            "extra15": "",
+            "extra16": "",
+            "extra17": "",
+            "extra18": "",
+            "extra19": "",
+            "extra20": ""
+          }
+        }
+      ]
+    }
+  ],
+  "API":{
+    "isInquiry":true,
+    "isPayment":false,
+    "isFileBasedInquiry":true,
+    
+    "MetaDataForDevelopment": "No Response code checking",
+
+     "apiInquiryRequestDto":{
+      "identifier":"bill-file-log",
+      "companyId":"55",
+      "consumerNumber":"ConsumerNumberTextBox",
+      "billingMonth":"BillingMonthDropDown",
+      "response":"fileId,referenceNumber,level1,level2,level3,level4,name,fatherName,dueDate,amountBeforeDueDate,amountAfterDueDate,billingMonth,invoiceId,accountNumber,issueDate,arrears,lps,extra1,extra2,extra3,extra4,extra5,extra6,extra7,extra8,extra9,extra10,billerUniqueKey,paymentStatus,paidAmount,companyId",
+      "loginBranchCode":""
+    },
+    "RequiredFieldsBeforeInquiry":{
+      "fieldsList":[
+        "BillingMonthDropDown","ConsumerNumberTextBox"
+      ]
+    }
+    
+  }
+}

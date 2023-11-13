@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tlr-ic-uc23-u-nift-fl
+  name: tlr-ic-uc23-u-nift-fl
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tlr-ic-uc23-u-nift-fl
+  template:
+    metadata:
+      labels:
+        app: tlr-ic-uc23-u-nift-fl
+        #      annotations:
+        #sidecar.istio.io/inject: "false"
+
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/tlr-ic-uc23-u-nift-fl:1.0.22
+          imagePullPolicy: Always
+          name: tlr-ic-uc23-u-nift-fl
+          ports:
+            - containerPort: 3500
+          resources:
+           requests:
+             memory: "2000Mi"
+             cpu: "200m"
+           limits:
+              memory: "8000Mi"
+              cpu: "2000m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tlr-ic-uc23-u-nift-fl
+  name: tlr-ic-uc23-u-nift-fl
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: tlr-ic-uc23-u-nift-fl
+  type: ClusterIP
+
+#################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tlr-ic-uc23-u-nift-fl
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/tlr_ic_uc23_u_nift_fl`)
+      kind: Rule
+      #      middlewares:
+      #    - name: cors-middleware
+      #   namespace: fsm
+      services:
+        - kind: Service
+          name: tlr-ic-uc23-u-nift-fl
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

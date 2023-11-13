@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+  name: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+  template:
+    metadata:
+      labels:
+        app: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert:1.2.2
+          imagePullPolicy: Always
+          name: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+  name: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+  type: ClusterIP
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/TLR_TF_UC31_TF_FrxRmt_Encsh_Print_Enc_Cert`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: tlr-tf-uc31-tf-frxrmt-encsh-print-enc-cert
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

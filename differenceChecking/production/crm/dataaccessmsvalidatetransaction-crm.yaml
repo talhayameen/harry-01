@@ -1,0 +1,48 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsvalidatetransaction-crm
+  name: dataaccessmsvalidatetransaction-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31242
+  selector:
+    app: dataaccessmsvalidatetransaction-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsvalidatetransaction-crm
+  name: dataaccessmsvalidatetransaction-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsvalidatetransaction-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsvalidatetransaction-crm
+    spec:
+      #nodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsvalidatetransaction:0.0.9-crm
+          imagePullPolicy: Always
+          name: dataaccessmsvalidatetransaction-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

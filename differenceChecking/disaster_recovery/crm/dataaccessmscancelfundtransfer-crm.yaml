@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmscancelfundtransfer-crm
+  name: dataaccessmscancelfundtransfer-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31464
+  selector:
+    app: dataaccessmscancelfundtransfer-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmscancelfundtransfer-crm
+  name: dataaccessmscancelfundtransfer-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmscancelfundtransfer-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmscancelfundtransfer-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          env:
+            - name: REDIS_CANCELFT_IP
+              value: "redis-cancelft.teresol.svc.cluster.local"
+            - name: REDIS_CANCELFT_PORT
+              value: "6379"
+
+          image: harbor.teresol.com/teresol/dataaccessmscancelfundtransfer:1.0.4-crm
+          imagePullPolicy: Always
+          name: dataaccessmscancelfundtransfer-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

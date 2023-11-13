@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tlr-tf-uc75-ibca-inq
+  name: tlr-tf-uc75-ibca-inq
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tlr-tf-uc75-ibca-inq
+  template:
+    metadata:
+      labels:
+        app: tlr-tf-uc75-ibca-inq
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/tlr-tf-uc75-ibca-inq:1.1.0
+          imagePullPolicy: Always
+          name: tlr-tf-uc75-ibca-inq
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tlr-tf-uc75-ibca-inq
+  name: tlr-tf-uc75-ibca-inq
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: tlr-tf-uc75-ibca-inq
+  type: ClusterIP
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tlr-tf-uc75-ibca-inq
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/TLR_TF_UC75_IBCA_INQ`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: tlr-tf-uc75-ibca-inq
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

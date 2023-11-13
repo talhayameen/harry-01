@@ -1,0 +1,81 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tlr-oc-uc22-icc-iq
+  name: tlr-oc-uc22-icc-iq
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tlr-oc-uc22-icc-iq
+  template:
+    metadata:
+      labels:
+        app: tlr-oc-uc22-icc-iq
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/tlr-oc-uc22-icc-iq:1.0.6
+          imagePullPolicy: Always
+          name: tlr-oc-uc22-icc-iq
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: tlr-oc-uc22-icc-iq
+  name: tlr-oc-uc22-icc-iq
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: tlr-oc-uc22-icc-iq
+  type: ClusterIP
+
+#################################
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-tlr-oc-uc22-icc-iq
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/TLR_OC_UC22_ICC_IQ`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: tlr-oc-uc22-icc-iq
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

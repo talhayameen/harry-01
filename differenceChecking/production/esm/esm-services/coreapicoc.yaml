@@ -1,0 +1,140 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: esm
+  labels:
+    app: coreapicoc
+  name: coreapicoc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coreapicoc
+  template:
+    metadata:
+      labels:
+        app: coreapicoc
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+      
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"        
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: esm-configmap-core
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: esm-configmap-core
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: esm-configmap-core
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: esm-configmap-core
+                  key: QUARKUS_TLS_TRUST_ALL
+
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: esm-configmap-core
+                  key: QUARKUS_OIDC_AUTH_SERVER_URL
+
+            - name: QUARKUS_OIDC_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: esm-configmap-core
+                  key: CLIENT_ID_COC
+
+            - name: QUARKUS_OIDC_CREDENTIALS_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: esm-configmap-core
+                  key: CLIENT_SECRET_COC
+                          
+            - name: COC_TRANSACTION_DETAIL_DATA_ACCESS_HOST
+              value: "dataaccessmscoctrandetail.esm.svc.cluster.local"
+            - name: COC_TRANSACTION_DETAIL_DATA_ACCESS_PORT
+              value: "80"
+
+            - name: COC_TRANSACTION_DETAIL_REMITLY_DATA_ACCESS_HOST
+              value: "dataaccessmscoctrandetailremitly"
+            - name: COC_TRANSACTION_DETAIL_REMITLY_DATA_ACCESS_PORT
+              value: "80"
+
+            - name: COC_MONEYGRAM_DATA_ACCESS_HOST
+              value: "dataaccessmscocmoneygram"
+            - name: COC_MONEYGRAM_DATA_ACCESS_PORT
+              value: "80"
+
+            - name: COC_TIEUP_SETUP_DATA_ACCESS_HOST
+              value: "dataaccessmscoctieupsetup"
+            - name: COC_TIEUP_SETUP_DATA_ACCESS_PORT
+              value: "80"
+
+            - name: COC_HRDTRANSACTIONSLOG_DATA_ACCESS_HOST
+              value: "dataaccessmscochrdtranslog"
+            - name: COC_HRDTRANSACTIONSLOG_DATA_ACCESS_PORT
+              value: "80"
+
+            - name: COC_HASH_SEED_DATA_ACCESS_HOST
+              value: "dataaccessmscochashseed"
+            - name: COC_HASH_SEED_DATA_ACCESS_PORT
+              value: "80"   
+              
+            - name: COC_PAYMENT_INFO_DATA_ACCESS_HOST
+              value: "dataaccessmscocpaymentinfo"
+            - name: COC_PAYMENT_INFO_DATA_ACCESS_PORT
+              value: "80"
+
+            - name: LOG_LEVEL
+              value: "DEBUG"
+
+
+          image: harbor.teresol.com/coreservices/coreapicoc:1.3.3
+          imagePullPolicy: Always
+          name: coreapicoc
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+#########################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: esm
+  labels:
+    app: coreapicoc
+  name: coreapicoc
+  namespace: esm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32759
+  selector:
+    app: coreapicoc
+  type: NodePort

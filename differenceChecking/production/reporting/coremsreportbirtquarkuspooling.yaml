@@ -1,0 +1,110 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: reporting
+  labels:
+    app: coremsreportbirtquarkuspooling
+  name: coremsreportbirtquarkuspooling
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremsreportbirtquarkuspooling
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: coremsreportbirtquarkuspooling
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      ##r2bcbs.dev.server28
+      nodeName: r2bcbsint29.bank.alhabib.com            #r2bcbsint23.bank.alhabib.com 
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          env:
+            - name: REDIS_IP
+              value: "redis-reporting.reporting.svc.cluster.local"
+            - name: REDIS_PORT
+              value: "6379"
+
+            - name: MSSQLRTPS_DATABASE_IP
+              value: "10.90.93.12"
+            - name: MSSQLRTPS_DATABASE_PORT
+              value: "1433"
+
+            - name: DATABASE_NANE
+              value: "HR_DirectPayment"
+
+            - name: MSSQLRTPS_USERNAME
+              value: "rps"
+            - name: MSSQLRTPS_PASSWORD
+              value: "Rps123/?"
+
+
+          image: harbor.teresol.com/reporting/coremsreportbirtquarkuspooling:0.2.3-teller
+          name: coremsreportbirtquarkuspooling
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /deployments/reports
+              name: coremsreportbirtquarkuspolling-data
+            - mountPath: /deployments/tmp
+              name: coremsreportbirttmp
+          securityContext:
+             capabilities:
+                add: ["SYS_ADMIN"]
+
+          resources:
+           requests:
+             memory: "1000Mi"
+             #  cpu: "200m"
+           limits:
+              memory: "4000Mi"
+              #  cpu: "2000m"
+
+      restartPolicy: Always
+      volumes:
+        - name: coremsreportbirtquarkuspolling-data
+          hostPath:
+             path: /BirtReports
+             type: DirectoryOrCreate
+        - name: coremsreportbirttmp
+          hostPath:
+             path: /tempReportsGenerated
+             type: DirectoryOrCreate
+          #          persistentVolumeClaim:
+          #            claimName: coremsreportbirt-data-claim
+
+#########################################################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: reporting
+  labels:
+    app: coremsreportbirtquarkuspooling
+  name: coremsreportbirtquarkuspooling
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32034
+  selector:
+    app: coremsreportbirtquarkuspooling
+  type: NodePort
+

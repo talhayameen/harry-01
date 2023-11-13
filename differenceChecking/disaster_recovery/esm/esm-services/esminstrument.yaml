@@ -1,0 +1,97 @@
+---
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  labels:
+    app: esminstrument
+  name: esminstrument
+  namespace: esm
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esminstrument
+  template:
+    metadata:
+      labels:
+        app: esminstrument
+    spec:
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+
+            - configMapRef:
+                name: esm-configmap-fsm
+            - configMapRef:
+                name: esm-configmap-core
+          env:
+            - name: BANKIMD
+              value: "12345"
+
+            - name: TOKEN_CACHE_IN
+              value: "290"
+
+            - name: TOKEN_EXPIRY_IN
+              value: "290s"
+
+          image: harbor.teresol.com/esm/esminstrument:esm-1.0.4
+          imagePullPolicy: Always
+          name: esminstrument
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+---
+#Servie for esminstrument
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: esminstrument
+  name: esminstrument
+  namespace: esm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app: esminstrument
+  type: ClusterIP
+
+#########################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-esm-instrument
+  namespace: esm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/esm/esm-instrument`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: esminstrument
+          namespace: esm
+          port: 80
+  tls:
+    secretName: bahl-tls-secret
+
+
+

@@ -1,0 +1,388 @@
+{
+  "CompanyName": "1BILL(INVOICE/VOUCHER)",
+  "MetaDataForDevelopment": "",
+  "billerUIConversion": {
+    "fieldsList": [
+      {
+        "BillingMonthDropDown": {
+          "id": 1,
+          "value": "",
+          "label": "Billing Month",
+          "list": "",
+          "isDisabled": false,
+          "isVisible": true,
+          "isMandatory": true,
+          "maxlength": 20,
+          "mask": "",
+          "eventType": "onChange",
+          "type": "dropDown",
+          "itemValue": "billingMonth",
+          "sequenceNO": 1
+        },
+        "WithinDueDateAmountTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Amount Within Due Date",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "amountWithinDueDate",
+          "textAlign": "right",
+          "sequenceNO": 2
+        },
+        "PaymentSlipIdTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "numeric",
+          "isMandatory": false,
+          "label": "Payment Slip Id",
+          "maxlength": 30,
+          "mask": "",
+          "isDisabled": false,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "sequenceNO": 3
+        },
+        "DueDateTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "date",
+          "isMandatory": false,
+          "label": "Due Date",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "dueDate",
+          "sequenceNO": 4
+        },
+        "ContactNumberTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "numeric",
+          "isMandatory": false,
+          "label": "Contact Number",
+          "maxlength": 11,
+          "mask": "",
+          "isDisabled": false,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "sequenceNO": 5
+        },
+        "AmountAfterDueDateTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Amount After Due Date",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "amountAfterDueDate",
+          "textAlign": "right",
+          "sequenceNO": 6
+        },
+        "CnicNumberTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "numeric",
+          "isMandatory": false,
+          "label": "CNIC Number",
+          "maxlength": 13,
+          "mask": "",
+          "isDisabled": false,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "sequenceNO": 7
+        },
+        "BillingStatusTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "alphaNumericSpecial",
+          "isMandatory": false,
+          "label": "Billing Status",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "billStatusDescription",
+          "sequenceNO": 8
+        },
+        "CustomerNameTextBox": {
+          "id": 1,
+          "value": "",
+          "dataType": "alphaNumericSpecial",
+          "isMandatory": false,
+          "label": "Customer Name",
+          "maxlength": 60,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "customerName",
+          "sequenceNO": 9
+        },
+        "ChargesTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Charges",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "bankCharges",
+          "textAlign": "right",
+          "sequenceNO": 10
+        },
+        "CompanyNameDropDown": {
+          "id": 1,
+          "value": "",
+          "label": "Company Name",
+          "list": "",
+          "isDisabled": false,
+          "isVisible": true,
+          "isMandatory": true,
+          "maxlength": 20,
+          "mask": "",
+          "eventType": "onChange",
+          "type": "dropDown",
+          "sequenceNO": 11
+        },
+        "TotalAmountTextBox": {
+          "id": 2,
+          "value": "",
+          "dataType": "numericDecimal",
+          "isMandatory": false,
+          "label": "Total Amount",
+          "maxlength": 20,
+          "mask": "",
+          "isDisabled": true,
+          "isVisible": true,
+          "eventType": "onBlur",
+          "type": "textBox",
+          "itemValue": "amountToBePaidExcludingCharges",
+          "textAlign": "right",
+          "sequenceNO": 12
+        },
+        "FetchDetailInformationButton": {
+          "id": 2,
+          "isDisabled": false,
+          "isVisible": true,
+          "sequenceNO": 13
+        },
+        "AccountTitleTextBox": {
+          "isVisible": false
+        },
+        "AccountNumberTextBox": {
+          "isVisible": false
+        },
+        "OkButton": {
+          "isDisable": true
+        }
+      }
+    ]
+  },
+  "billerMatrixConversion": [
+    {
+      "header": {
+        "loginBranch": "",
+        "loginUserId": "",
+        "loginUserBatch": "",
+        "loginUserIp": "",
+        "activityCode": "UBCASHPY",
+        "subActivityCode": "",
+        "loginBranchDate": "",
+        "currencyCode": "586"
+      },
+      "transactionDto": [
+        {
+          "billDetail": {
+            "companyId": "",
+            "companyName": "",
+            "barCode": "",
+            "paymentMode": "CASH",
+            "companyBranchCode": "786",
+            "companyAccountType": "",
+            "companyCustomerNumber": "",
+            "companyRunNumber": "",
+            "companyCheckDigit": "",
+            "accountName": "",
+            "debitBranchCode": "",
+            "debitAccountType": "",
+            "debitCustomerNumber": "",
+            "debitRunNumber": "",
+            "debitCheckDigit": "",
+            "chequeNumber": "",
+            "chequeAmount": "",
+            "totalBills": 1,
+            "slipNumber": "PaymentSlipIdTextBox",
+            "customerName": "CustomerNameTextBox",
+            "validityDate": "",
+            "billingMonth": "BillingMonthDropDown",
+            "dueDate": "DueDateTextBox",
+            "afterDueDate": "",
+            "billingAmount": "TotalAmountTextBox",
+            "afterDueDateBillingAmount": "AmountAfterDueDateTextBox",
+            "transactionAmount": "TotalAmountTextBox",
+            "contractAccount": "",
+            "customerId": "CnicNumberTextBox",
+            "dealerCode": "",
+            "dealerName": "",
+            "productCode": "",
+            "productName": "",
+            "totalCharges": "ChargesTextBox",
+            "bankShares": "",
+            "totalAmount": "TotalAmountTextBox",
+            "address": "",
+            "extra1": "7",
+            "extra2": "loginBranchDateInDDMMYYY",
+            "extra3": "companyAbr",
+            "extra4": "CnicNumberTextBox",
+            "extra5": "ContactNumberTextBox",
+            "extra6": "companyCode",
+            "extra7": "PaymentSlipIdTextBox",
+            "extra8": "",
+            "extra9": "transactionTime",
+            "extra10": "CustomerNameTextBox",
+            "extra11": "",
+            "extra12": "",
+            "extra13": "",
+            "extra14": "",
+            "extra15": "",
+            "extra16": "",
+            "extra17": "",
+            "extra18": "",
+            "extra19": "",
+            "extra20": ""
+          },
+          "billingCompanyApi": {
+            "metadata": {
+              "source": {
+                "identifier": "OBS_CC_UC7_FT_FT"
+              },
+              "destination": {
+                "identifier": "BillInvoiceVoucherApiPaymentRequest"
+              },
+              "type": "realtime"
+            },
+            "data": {
+              "externalServiceApiRequest": {
+                "companyId": "1BILL_INV_VOUCHER_PAY",
+                "companyReferenceNumber": "IN01BILL",
+                "invoiceNumber": "CnicNumberTextBox",
+                "customerReferenceNumber": "PaymentSlipIdTextBox",
+                "transactionAmount": "TotalAmountTextBox",
+                "financialInstitutionMnemonic": "",
+                "transactionIdentifier": "loginBranchDateTimeFromFrontEnd",
+                "customerAccountNumber": "loginBranch",
+                "purchaseOrderAmount": "AmountAfterDueDateTextBox",
+                "contactNumber": "ContactNumberTextBox",
+                "messageOrigniationAdviseNumber": "",
+                "customerName": "CustomerNameTextBox",
+                "postingBy": "loginUserId",
+                "uniqueIdentity": "7",
+                "branchNumber": "loginBranch",
+                "branchDescription": "",
+                "transactionDateTime": "transactionDateTime",
+                "transactionDate": "transactionDate",
+                "transactionTime":"",
+                "transactionAuthorizationId": "",
+                "customerPaymentChoice": "",
+                "transactionEffectiveDate": "",
+                "iso4217": "",
+                "currencyTradeRate": "",
+                "extra_1": "Cash",
+                "extra_2": "Branch",
+                "extra_3": "",
+                "extra_4": "",
+                "extra_5": "",
+                "extra_6": "",
+                "extra_7": "",
+                "extra_8": "",
+                "extra_9": "",
+                "extra_10": "",
+                "extra_11": "",
+                "extra_12": "",
+                "extra_13": "",
+                "extra_14": "",
+                "extra_15": ""
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "API": {
+    "isInquiry": true,
+    "isPayment": true,
+
+    "apiInquiryRequestDto": {
+      "metaData": {
+        "source": {
+          "identifier": "OBS_CC_UC7_FT_FT"
+        },
+        "destination": {
+          "identifier": "1BillInvoiceVoucherInquiryRequest"
+        },
+        "type": "realtime"
+      },
+      "data": {
+        "externalServiceApiRequest": {
+          "companyId": "1BILL_INV_VOUCHER_INQ",
+          "companyReferenceNumber": "IN01BILL",
+          "invoiceNumber": "PaymentSlipIdTextBox",
+          "customerReferenceNumber": "PaymentSlipIdTextBox",
+          "transactionAmount": "0",
+          "financialInstitutionMnemonic": "",
+          "transactionIdentifier": "loginBranchDateTimeFromFrontEnd",
+          "transactionDateTime": "loginBranchDateTimeFromFrontEnd",
+          "extra_1": "",
+          "extra_2": "",
+          "extra_3": "",
+          "extra_4": "",
+          "extra_5": "",
+          "extra_6": "",
+          "extra_7": "",
+          "extra_8": "",
+          "extra_9": "",
+          "extra_10": "",
+          "extra_11": "",
+          "extra_12": "",
+          "extra_13": "",
+          "extra_14": "",
+          "extra_15": ""
+        }
+      }
+    },
+    "RequiredFieldsBeforeInquiry": {
+      "fieldsList": [
+        "BillingMonthDropDown",
+        "PaymentSlipIdTextBox",
+        "ContactNumberTextBox",
+        "CnicNumberTextBox",
+        "CompanyNameDropDown"
+      ]
+    }
+  }
+}

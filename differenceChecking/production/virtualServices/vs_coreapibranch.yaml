@@ -1,0 +1,48 @@
+
+#####################
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapibranch
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-branch/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapibranch-crm
+      headers:
+        request:
+          set:
+            X-TBAHL-LOG: "%REQ(X-TBAHL-LOG)%"
+  - match:
+    - uri:
+        prefix: /core-api-branch/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapibranch-teller
+      headers:
+        request:
+          set:
+            X-TBAHL-LOG: "%REQ(X-TBAHL-LOG)%"
+
+  - match:
+    - uri:
+        prefix: /core-api-branch
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapibranch
+

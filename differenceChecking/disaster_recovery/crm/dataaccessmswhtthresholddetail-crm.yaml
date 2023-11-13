@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmswhtthresholddetail-crm
+  name: dataaccessmswhtthresholddetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31732
+  selector:
+    app: dataaccessmswhtthresholddetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmswhtthresholddetail-crm
+  name: dataaccessmswhtthresholddetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmswhtthresholddetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmswhtthresholddetail-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmswhtthresholddetail:0.0.4-crm
+          imagePullPolicy: Always
+          name: dataaccessmswhtthresholddetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

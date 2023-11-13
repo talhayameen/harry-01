@@ -1,0 +1,39 @@
+
+
+##########################################
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapiinstrument
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-instrument/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapiinstrument-crm
+  - match:
+    - uri:
+        prefix: /core-api-instrument/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapiinstrument-teller
+  - match:
+    - uri:
+        prefix: /core-api-instrument
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapiinstrument

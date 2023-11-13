@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmswhtdocumentdetail-crm
+  name: dataaccessmswhtdocumentdetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31731
+  selector:
+    app: dataaccessmswhtdocumentdetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmswhtdocumentdetail-crm
+  name: dataaccessmswhtdocumentdetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmswhtdocumentdetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmswhtdocumentdetail-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmswhtdocumentdetail:0.0.4-crm
+          imagePullPolicy: Always
+          name: dataaccessmswhtdocumentdetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

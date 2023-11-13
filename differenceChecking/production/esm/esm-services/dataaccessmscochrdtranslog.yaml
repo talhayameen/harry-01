@@ -1,0 +1,149 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: esm
+  labels:
+    app: dataaccessmscochrdtranslog
+  name: dataaccessmscochrdtranslog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmscochrdtranslog
+  template:
+    metadata:
+      labels:
+        app: dataaccessmscochrdtranslog
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+
+      containers:
+        - env:
+
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: BOX2_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: BOX2_DATABASE_IP
+
+            - name: BOX4_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: BOX4_DATABASE_IP
+
+            - name: CPU_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: CPU_DATABASE_IP
+                  
+            - name: PO_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: PO_DATABASE_IP
+                                    
+            - name: OBS_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: OBS_DATABASE_IP
+
+            - name: CCARD_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: CCARD_DATABASE_IP
+                                   
+            - name: BAHRAIN_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: BAHRAIN_DATABASE_IP
+                                                      
+            - name: MALAYSIA_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: MALAYSIA_DATABASE_IP
+                  
+            - name: EPZ_DATABASE_IP
+              valueFrom:
+                configMapKeyRef:
+                  name: dataaccess-svc-configmap
+                  key: EPZ_DATABASE_IP
+
+            - name: DATAACCESS_COCHRDTRANSLOG_PORT
+              value: "80"
+            - name: DATAACCESS_COCHRDTRANSLOG_HOST
+              value: "0.0.0.0"
+            - name: DATAACCESS_COCHRDTRANSLOG_CORS
+              value: "true"
+            - name: DB-KIND
+              value: "mssql"
+            - name: SQL_USERNAME
+              value: "sa"
+            - name: SQL_PASSWORD
+              value: "admin123/?"
+            - name: SQL_SERVER_IP
+              value: "10.200.33.111"
+            - name: SQL_SERVER_PORT
+              value: "1433"
+            - name: DATABASE_NAME
+              value: "HR_DirectPayment_R2"
+            - name: SQL_DRIVER
+              value: "com.microsoft.sqlserver.jdbc.SQLServerDriver"
+
+          image: harbor.teresol.com/coreservices/dataaccessmscochrdtranslog:1.0.4
+          imagePullPolicy: Always
+          name: dataaccessmscochrdtranslog
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: esm
+  labels:
+    app: dataaccessmscochrdtranslog
+  name: dataaccessmscochrdtranslog
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32761
+  selector:
+    app: dataaccessmscochrdtranslog
+  type: NodePort
+

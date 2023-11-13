@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsaccountibandetail-crm
+  name: dataaccessmsaccountibandetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31753
+  selector:
+    app: dataaccessmsaccountibandetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsaccountibandetail-crm
+  name: dataaccessmsaccountibandetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsaccountibandetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsaccountibandetail-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsaccountibandetail:0.0.2-crm
+          imagePullPolicy: Always
+          name: dataaccessmsaccountibandetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

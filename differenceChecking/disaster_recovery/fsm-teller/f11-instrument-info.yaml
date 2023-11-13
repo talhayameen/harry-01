@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: f11-instrument-info
+  name: f11-instrument-info
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: f11-instrument-info
+  template:
+    metadata:
+      labels:
+        app: f11-instrument-info
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/f11-instrument-info:1.0.3
+          imagePullPolicy: Always
+          name: f11-instrument-info
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: f11-instrument-info
+  name: f11-instrument-info
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: f11-instrument-info
+  type: ClusterIP
+
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-f11-instrument-info
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/F11_Instrument_Info`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: f11-instrument-info
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

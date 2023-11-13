@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol      
+  labels:
+    app: dataaccessmscountrydetail-crm
+  name: dataaccessmscountrydetail-crm
+spec:
+  ports:
+    - name: http
+      nodePort: 31087
+      port: 80
+      targetPort: 8080
+  selector:
+    app: dataaccessmscountrydetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol      
+  labels:
+    app: dataaccessmscountrydetail-crm
+  name: dataaccessmscountrydetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmscountrydetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmscountrydetail-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmscountrydetail:1.1.0-crm
+          imagePullPolicy: Always
+          name: dataaccessmscountrydetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

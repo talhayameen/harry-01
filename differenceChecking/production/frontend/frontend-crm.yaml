@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bahl-frontend-crm
+  name: bahl-frontend-crm
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bahl-frontend-crm
+  template:
+    metadata:
+      labels:
+        app: bahl-frontend-crm
+    spec:
+      containers:
+        - image: harbor.teresol.com/frontend/fe:2.4.0-int-crm
+          imagePullPolicy: Always
+          name: bahl-frontend-crm
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: bahl-frontend-crm
+  namespace: fsm
+  name: bahl-frontend-crm
+spec:
+  ports:
+    - name: "http"
+      port: 80
+      targetPort: 80
+  selector:
+    app: bahl-frontend-crm
+  type: ClusterIP

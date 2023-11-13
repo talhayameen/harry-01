@@ -1,0 +1,46 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsmodavtvdetail-crm
+  name: dataaccessmsmodavtvdetail-crm
+spec:
+  ports:
+    - name: http
+      nodePort: 30636
+      port: 80
+      targetPort: 8080
+  selector:
+    app: dataaccessmsmodavtvdetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsmodavtvdetail-crm
+  name: dataaccessmsmodavtvdetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsmodavtvdetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsmodavtvdetail-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsmodavtvdetail:1.1.2-crm
+          imagePullPolicy: Always
+          name: dataaccessmsmodavtvdetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

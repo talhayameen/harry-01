@@ -1,0 +1,85 @@
+---
+apiVersion: apps/v1
+
+kind: Deployment
+metadata:
+  labels:
+    app: esmcard
+  name: esmcard
+  namespace: esm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esmcard
+  template:
+    metadata:
+      labels:
+        app: esmcard
+    spec:
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+
+        - envFrom:
+            - configMapRef:
+                name: esm-configmap-fsm
+            - configMapRef:
+                name: esm-configmap-core
+
+          image: harbor.teresol.com/esm/esmcard:esm-1.0.3
+          imagePullPolicy: Always
+          name: esmcard
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+---
+#Servie for EsmCard
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: esmcard
+  name: esmcard
+  namespace: esm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app: esmcard
+  type: ClusterIP
+
+#########################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-esm-card
+  namespace: esm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/esm/esm-card`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: esmcard
+          namespace: esm
+          port: 80
+  tls:
+    secretName: bahl-tls-secret
+

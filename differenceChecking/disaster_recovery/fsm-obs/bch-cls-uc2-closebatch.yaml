@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bch-cls-uc2-closebatch
+  name: bch-cls-uc2-closebatch
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bch-cls-uc2-closebatch
+  template:
+    metadata:
+      labels:
+        app: bch-cls-uc2-closebatch
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: fsm-configmap
+          image: harbor.teresol.com/fsm/bch-cls-uc2-closebatch:1.2.6
+          imagePullPolicy: Always
+          name: bch-cls-uc2-closebatch
+          ports:
+            - containerPort: 3500
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: bch-cls-uc2-closebatch
+  name: bch-cls-uc2-closebatch
+  namespace: fsm
+spec:
+  ports:
+    - name: "3500"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: bch-cls-uc2-closebatch
+  type: ClusterIP
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-bch-cls-uc2-closebatch
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: Host(`services.teresol-bahl.com`) && PathPrefix(`/fsm/BCH_CLS_UC2_CloseBatch`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+      services:
+        - kind: Service
+          name: bch-cls-uc2-closebatch
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

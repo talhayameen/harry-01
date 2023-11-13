@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmscurrencydetail-crm
+  name: dataaccessmscurrencydetail-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31740
+  selector:
+    app: dataaccessmscurrencydetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmscurrencydetail-crm
+  name: dataaccessmscurrencydetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmscurrencydetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmscurrencydetail-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmscurrencydetail:1.0.9-crm
+          imagePullPolicy: Always
+          name: dataaccessmscurrencydetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

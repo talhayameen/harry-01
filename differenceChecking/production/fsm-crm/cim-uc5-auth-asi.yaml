@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cim-uc5-auth-asi
+  name: cim-uc5-auth-asi
+  namespace: fsm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cim-uc5-auth-asi
+  template:
+    metadata:
+      labels:
+        app: cim-uc5-auth-asi
+    spec:
+      containers:
+      - envFrom:
+          - configMapRef:
+              name: fsm-configmap
+        image: harbor.teresol.com/fsm/cim-uc5-auth-asi:1.0.6
+        imagePullPolicy: Always
+        name: cim-uc5-auth-asi
+        ports:
+        - containerPort: 80
+        - containerPort: 3500
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: cim-uc5-auth-asi
+  name: cim-uc5-auth-asi
+  namespace: fsm
+spec:
+  ports:
+    - name: "fe"
+      port: 80
+      targetPort: 80
+    - name: "fsm"
+      port: 3500
+      targetPort: 3500
+  selector:
+    app: cim-uc5-auth-asi
+  type: ClusterIP
+
+#############################################################
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingressroute-cim-uc5-auth-asi
+  namespace: fsm
+spec:
+  entryPoints:
+    - web
+    - websecure
+  routes:
+    - match: PathPrefix(`/fe/CIM_UC5_Auth_ASI`)
+      kind: Rule
+      middlewares:
+        - name: cors-middleware
+          namespace: fsm
+        - name: strip-path
+          namespace: fsm
+      services:
+        - kind: Service
+          name: cim-uc5-auth-asi
+          namespace: fsm
+          port: 80
+
+    - match: PathPrefix(`/fsm/CIM_UC5_Auth_ASI`)
+      kind: Rule
+      services:
+        - kind: Service
+          name: cim-uc5-auth-asi
+          namespace: fsm
+          port: 3500
+  tls:
+    secretName: bahl-tls-secret

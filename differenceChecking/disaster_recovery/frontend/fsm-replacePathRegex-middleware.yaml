@@ -1,0 +1,13 @@
+---
+# REPLACE INCOMMING URL PATH IN FSM - REMOVING v2/
+# Replace path with regex
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: fsm-replacepathregex
+  namespace: fsm
+spec:
+  replacePathRegex:
+    regex: ^/fsm/v2/(.*)
+    replacement: /fsm/$1
+

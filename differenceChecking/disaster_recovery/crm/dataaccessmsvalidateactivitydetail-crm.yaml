@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol    
+  labels:
+    app: dataaccessmsvalidateactivitydetail-crm
+  name: dataaccessmsvalidateactivitydetail-crm
+spec:
+  ports:
+    - name: http
+      #nodePort: 31300
+      port: 80
+      targetPort: 8080
+  selector:
+    app: dataaccessmsvalidateactivitydetail-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsvalidateactivitydetail-crm
+  name: dataaccessmsvalidateactivitydetail-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsvalidateactivitydetail-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsvalidateactivitydetail-crm
+    spec:
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsvalidateactivitydetail:1.0.2-crm
+          imagePullPolicy: Always
+          name: dataaccessmsvalidateactivitydetail-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

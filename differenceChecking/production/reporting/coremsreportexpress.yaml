@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: reporting
+  labels:
+    app: coremsreportexpress
+  name: coremsreportexpress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremsreportexpress
+  template:
+    metadata:
+      labels:
+        app: coremsreportexpress
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: PORT
+              value: "8080"
+
+            - name: NODE_ENV
+              value: "development"
+
+            - name: LOG_LEVEL
+              value: "debug"
+
+            - name: DATAACCESS_COMPANY_DETAIL_WEBCLIENT_IP
+              value: "dataaccessmscompanydetail-teller.teresol.svc.cluster.local"
+            - name: DATAACCESS_COMPANY_DETAIL_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_CLEARING_INSTRUMENT_WEBCLIENT_IP
+              value: "dataaccessmsclearinginstrument-teller.teresol.svc.cluster.local"
+            - name: DATAACCESS_CLEARING_INSTRUMENT_WEBCLIENT_PORT
+              value: "80"
+
+          image: harbor.teresol.com/reporting/coremsreportexpress:1.0.3
+          name: coremsreportexpress
+          ports:
+            - containerPort: 8080
+      restartPolicy: Always
+
+##############################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: reporting
+  labels:
+    app: coremsreportexpress
+  name: coremsreportexpress
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32031
+  selector:
+    app: coremsreportexpress
+  type: NodePort

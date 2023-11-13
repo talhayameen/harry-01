@@ -1,0 +1,48 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsfile-crm
+  name: dataaccessmsfile-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmsfile-crm
+  template:
+    metadata:
+      labels:
+        app: dataaccessmsfile-crm
+    spec:
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+          image: harbor.teresol.com/teresol/dataaccessmsfile:1.0.5-crm
+          imagePullPolicy: Always
+          name: dataaccessmsfile-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: dataaccessmsfile-crm
+  name: dataaccessmsfile-crm
+spec:
+  ports:
+    - name: http
+      nodePort: 31428
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: dataaccessmsfile-crm
+  type: NodePort

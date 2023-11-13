@@ -1,0 +1,107 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapicurrency-crm
+  name: coreapicurrency-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31743
+  selector:
+    app: coreapicurrency-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapicurrency-crm
+  name: coreapicurrency-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coreapicurrency-crm
+  template:
+    metadata:
+      labels:
+        app: coreapicurrency-crm
+    spec:
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_OIDC_AUTH_SERVER_URL
+
+            - name: QUARKUS_OIDC_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_ID_CURRENCY
+
+            - name: QUARKUS_OIDC_CREDENTIALS_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_SECRET_CURRENCY
+
+            - name: DATAACCESS_MS_CURRENCYDETAILS_WEBCLIENT_IP
+              value: "dataaccessmscurrencydetail-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_MS_CURRENCYDETAILS_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_VALIDATECURRENCY_WEBCLIENT_IP
+              value: "dataaccessmsvalidatecurrency-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_VALIDATECURRENCY_WEBCLIENT_PORT
+              value: "80"
+
+
+          image: harbor.teresol.com/teresol/coreapicurrency:1.0.5-crm
+          imagePullPolicy: Always
+          name: coreapicurrency-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+

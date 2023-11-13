@@ -1,0 +1,71 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: esm
+  labels:
+    app: dataaccessmstieup
+  name: dataaccessmstieup
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31409
+  selector:
+    app: dataaccessmstieup
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: esm
+  labels:
+    app: dataaccessmstieup
+  name: dataaccessmstieup
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dataaccessmstieup
+  template:
+    metadata:
+      labels:
+        app: dataaccessmstieup
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+
+      containers:
+        - env:
+            - name: DATAACCESS_TIEUP_PORT
+              value: "8080"
+            - name: DATAACCESS_TIEUP_HOST
+              value: "0.0.0.0"
+            - name: DATAACCESS_TIEUP_CORS
+              value: "true"
+            - name: DB-KIND
+              value: "mssql" 
+            - name: SQL_USERNAME
+              value: "rps"
+            - name: SQL_PASSWORD
+              value: "Rps123/?"
+            - name: DB_USER
+              value: "JVb7gFmW3KDBw5oyWPhUbg=="
+            - name: DB_PASS
+              value: "8eK0duD7z1u/F1GCisSqVQ=="
+            - name: SQL_SERVER_IP
+              value: "10.90.95.85"
+            - name: SQL_SERVER_PORT
+              value: "1433"
+            - name: DATABASE_NAME
+              value: "HR_DirectPayment"
+            - name: SQL_DRIVER
+              value: "com.microsoft.sqlserver.jdbc.SQLServerDriver"                                                                                                                              
+          image: harbor.teresol.com/coreservices/dataaccessmstieup:1.0.2
+          imagePullPolicy: Always
+          name: dataaccessmstieup
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP

@@ -1,0 +1,59 @@
+
+
+#####################################
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: coreapifundstransfer
+  namespace: teresol
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - istio-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /core-api-fundsTransfer/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapifundstransfer-crm
+
+  - match:
+    - uri:
+       prefix: /core-api-fundsTransferBiller/v3
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapifundstransferbiller-crm
+
+  - match:
+    - uri:
+       prefix: /core-api-fundsTransferBiller/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapifundstransferbiller-teller
+
+  - match:
+    - uri:
+        prefix: /core-api-fundsTransfer/v2
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapifundstransfer-teller
+
+  - match:
+    - uri:
+        prefix: /core-api-fundsTransfer
+    route:
+    - destination:
+        port:
+          number: 80
+        host: coreapifundstransfer

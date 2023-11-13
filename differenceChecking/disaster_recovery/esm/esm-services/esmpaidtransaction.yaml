@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: esmpaidtransaction
+  name: esmpaidtransaction
+  namespace: esm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: esmpaidtransaction
+  template:
+    metadata:
+      labels:
+        app: esmpaidtransaction
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: FSM-WORKER
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com" 
+
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: esm-configmap-fsm
+
+          env:           
+            - name: VERSION
+              value: "v3"
+              
+            - name: CORE_API_TIEUP
+              value: "Y29yZS1hcGktdGlldXA6RUJiVzJiQXZvcFZQWGJsSHB5RXVwUjZLQ0h4QjRPZHY="  
+             
+            - name: API_MIDDLEWARE
+              value: "https://10.200.118.120:7844/"
+              
+            - name: GET_TOKEN
+              value: "https://services.teresol-bahl.com/"
+            
+            - name: API_TIEUP
+              value: "http://coreapitieup:80/"
+                 
+            - name: INTERVAL
+              value: "120"
+              
+            - name: ENABLE_AUTH
+              value: "true"
+              
+            - name: QUARKUS_SCHEDULER_ENABLED
+              value: "true"
+
+          image: harbor.teresol.com/esm/esmpaidtransaction:1.1.6
+          imagePullPolicy: Always
+          name: esmpaidtransaction
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: esmpaidtransaction
+  name: esmpaidtransaction
+  namespace: esm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31693
+  selector:
+    app: esmpaidtransaction
+  type: NodePort

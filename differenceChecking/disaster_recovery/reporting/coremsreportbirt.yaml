@@ -1,0 +1,84 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: reporting
+  labels:
+    app: coremsreportbirt
+  name: coremsreportbirt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coremsreportbirt
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: coremsreportbirt
+      annotations:
+        sidecar.istio.io/inject: "false"
+    spec:
+      #knodeSelector:
+        #kubernetes.io/role: CORE-WORKER
+      nodeName: r2bcbsint29.bank.alhabib.com            #r2bcbsint23.bank.alhabib.com
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+      containers:
+        - envFrom:
+            - configMapRef:
+                name: dataaccess-svc-configmap
+
+                #  env:
+                # - name: REDIS_IP
+                #  value: "redis-reporting.reporting.svc.cluster.local"
+                #  - name: REDIS_PORT
+                #  value: "6379"
+
+
+          image: harbor.teresol.com/reporting/coremsreportbirt:1.5.5-teller
+          name: coremsreportbirt
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - mountPath: /birt/reports
+              name: coremsreportbirt-data
+          securityContext:
+             capabilities:
+                add: ["SYS_ADMIN"]
+
+      restartPolicy: Always
+      volumes:
+        - name: coremsreportbirt-data
+          hostPath:
+             path: /BirtReports
+             type: DirectoryOrCreate
+
+          #persistentVolumeClaim:
+          # claimName: coremsreportbirt-data-claim
+
+##############################################
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: reporting
+  labels:
+    app: coremsreportbirt
+  name: coremsreportbirt
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32032
+  selector:
+    app: coremsreportbirt
+  type: NodePort
+

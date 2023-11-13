@@ -1,0 +1,128 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapifundstransfer-crm
+  name: coreapifundstransfer-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 31989
+  selector:
+    app: coreapifundstransfer-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapifundstransfer-crm
+  name: coreapifundstransfer-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coreapifundstransfer-crm
+  template:
+    metadata:
+      labels:
+        app: coreapifundstransfer-crm
+    spec:
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+            
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_OIDC_AUTH_SERVER_URL
+
+            - name: QUARKUS_OIDC_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_ID_FUNDTRANSFER
+
+            - name: QUARKUS_OIDC_CREDENTIALS_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_SECRET_FUNDTRANSFER
+
+
+            - name: CORE_API_FUNDSTRANSFER_MS_IP
+              value: "coremsfundstransfer-crm.teresol.svc.cluster.local"
+            - name: CORE_API_FUNDSTRANSFER_MS_PORT
+              value: "80"
+
+            - name: VOUCHER_DETAIL_IP
+              value: "dataaccessmsvoucherdetail-crm.teresol.svc.cluster.local"
+            - name: VOUCHER_DETAIL_PORT
+              value: "80"
+
+            - name: VALIDATE_TRANSACTION_IP
+              value: "dataaccessmsvalidatetransaction-crm.teresol.svc.cluster.local"
+            - name: VALIDATE_TRANSACTION_PORT
+              value: "80"
+
+            - name: FUNDS_TRANSFER_DETAIL_IP
+              value: "dataaccessmsfundstransferdetail-crm.teresol.svc.cluster.local"
+            - name: FUNDS_TRANSFER_DETAIL_PORT
+              value: "80"
+
+            - name: BRANCH_DATAACCESS_IP
+              value: "dataaccessmsbranchdetail-crm.teresol.svc.cluster.local"
+            - name: BRANCH_DATAACCESS_PORT
+              value: "80"
+
+
+            - name: QUARKUS_LOG_LEVEL
+              value: "DEBUG"
+
+              #- name: quarkus.log.category."io.quarkus.oidc".level
+            - name: QUARKUS_LOG_CATEGORY__IO_QUARKUS_OIDC__LEVEL
+              value: "TRACE"
+
+            - name: QUARKUS_LOG_MIN_LEVEL
+              value: "TRACE"
+
+          image: harbor.teresol.com/teresol/coreapifundstransfer:0.2.5-crm
+          imagePullPolicy: Always
+          name: coreapifundstransfer-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+
+
+#####################################

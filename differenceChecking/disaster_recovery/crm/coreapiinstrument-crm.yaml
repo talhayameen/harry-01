@@ -1,0 +1,208 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapiinstrument-crm
+  name: coreapiinstrument-crm
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      nodePort: 32333
+  selector:
+    app: coreapiinstrument-crm
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: teresol
+  labels:
+    app: coreapiinstrument-crm
+  name: coreapiinstrument-crm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coreapiinstrument-crm
+  template:
+    metadata:
+      labels:
+        app: coreapiinstrument-crm
+    spec:
+
+      hostAliases:
+      - ip: "10.90.95.52"
+        hostnames:
+        - "core.teresol-bahl.com"
+      - ip: "10.90.95.53"
+        hostnames:
+        - "services.teresol-bahl.com"
+
+      containers:
+        - env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: TZ
+
+            - name: QUARKUS_HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_HTTP_PORT
+
+            - name: QUARKUS_LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_LOG_LEVEL
+
+            - name: QUARKUS_TLS_TRUST_ALL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_TLS_TRUST_ALL
+
+            - name: QUARKUS_OIDC_AUTH_SERVER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: QUARKUS_OIDC_AUTH_SERVER_URL
+
+            - name: QUARKUS_OIDC_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_ID_INSTRUMENT
+
+            - name: QUARKUS_OIDC_CREDENTIALS_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: coreapi-svc-configmap
+                  key: CLIENT_SECRET_INSTRUMENT
+
+
+            - name: DATAACCESS_CLEARING_INSTRUMENT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_OBC_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_INSTRUMENT_REQUEST_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_BULK_OUTWARD_WEBCLIENT_IP
+              value: "localhost"
+
+            - name: DATAACCESS_CLEARING_INSTRUMENT_CONSOLIDATED_WEBCLIENT_IP
+              value: "dataaccessmsclearinginstrumentconsolidated-crm"
+
+            - name: DATAACCESS_OBC_REFERENCE_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_OBC_WEBCLIENT_IP
+              value: "dataaccessmsobc-crm"
+
+            - name: DATAACCESS_ADVICES_WEBCLIENT_IP
+              value: "dataaccessmsadvices-crm"
+
+            - name: DATAACCESS_CLEARING_INSTRUMENT_WEBCLIENT_IP
+              value: "dataaccessmsclearinginstrument-crm"
+
+            - name: DATAACCESS_OUTWARD_INSTRUMENT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_INSTRUMENT_WEBCLIENT_IP
+              value: "dataaccessmsaccountinstrument-crm"
+
+            - name: DATAACCESS_ADVICES_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_VALIDATE_INSTRUMENT_WEBCLIENT_IP
+              value: "dataaccessmsvalidateinstrument-crm"
+
+            - name: DATAACCESS_BULK_INSTRUMENT_WEBCLIENT_IP
+              value: "dataaccessmsbulkinstrument-crm"
+
+            - name: DATAACCESS_FOREX_INSTRUMENT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_INSTRUMENT_REQUEST_WEBCLIENT_IP
+              value: "dataaccessmsinstrumentrequest-crm"
+
+            - name: DATAACCESS_INSTRUMENT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_VALIDATE_INSTRUMENT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_INSTRUMENT_WEBCLIENT_IP
+              value: "dataaccessmsinstrument-crm"
+
+            - name: DATAACCESS_CLEARING_INSTRUMENT_CONSOLIDATED_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_BULK_INSTRUMENT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_ACCOUNT_INSTRUMENT_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_INSTRUMENT_STATIONARY_WEBCLIENT_IP
+              value: "dataaccessmsinstrumentstationary-crm"
+
+            - name: DATAACCESS_OBC_REFERENCE_WEBCLIENT_IP
+              value: "dataaccessmsobcreference-crm"
+
+            - name: DATAACCESS_OUTWARD_INSTRUMENT_WEBCLIENT_IP
+              value: "dataaccessmsoutwardinstrument-crm"
+
+            - name: DATAACCESS_FOREX_INSTRUMENT_WEBCLIENT_IP
+              value: "dataaccessmsforexinstrument-crm"
+
+            - name: DATAACCESS_BULK_OUTWARD_WEBCLIENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_INSTRUMENT_STATIONARY_WEBCLIENT_PORT
+              value: "80"
+
+            - name: CORE_MS_UPLOADNIFT_IP
+              value: "coremsuploadnift-crm"
+
+            - name: CORE_MS_UPLOADNIFT_PORT
+              value: "80"
+
+            - name: CORE_MS_OUTWARDRELEASE_IP
+              value: "coremsoutwardrelease-crm.teresol.svc.cluster.local"
+            - name: CORE_MS_OUTWARDRELEASE_PORT
+              value: "80"
+
+            - name: CORE_MS_CANCELINSTRUMENT_IP
+              value: "coremscancelinstrument-crm.teresol.svc.cluster.local"
+            - name: CORE_MS_CANCELINSTRUMENT_PORT
+              value: "80"
+
+            - name: DATAACCESS_CLEARING_INSTRUMENT_IMAGES_WEBCLIENT_IP
+              value: "dataaccessmsclearinginstrumentimages-crm.teresol.svc.cluster.local"
+            - name: DATAACCESS_CLEARING_INSTRUMENT_IMAGES_WEBCLIENT_PORT
+              value: "80"
+          
+            - name: CORE_MS_INWARD_RELEASE_POLLING_IP
+              value: "coremsinwardreleasepolling-crm.teresol.svc.cluster.local"
+            - name: CORE_MS_INWARD_RELEASE_POLLING_PORT
+              value: "80"
+
+
+          image: harbor.teresol.com/teresol/coreapiinstrument:1.1.2-crm
+          imagePullPolicy: Always
+          name: coreapiinstrument-crm
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+##########################################
