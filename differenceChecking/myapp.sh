@@ -13,6 +13,19 @@ extract_env_variables() {
     # Extract lines starting with '- env:' or '- envFrom:'
     grep -E '^\s+-\s+(env|envFrom):' "$yaml_file" -A 1000 | grep -E '^\s+-\s+[A-Za-z0-9_]+\s*:' | \
     sed -E 's/^\s+-\s+([A-Za-z0-9_]+)\s*:(.*)$/\1=\2/'
+
+# ^: Anchors the match to the beginning of a line.
+# \s+: Matches one or more whitespace characters.
+# -: Matches a hyphen character.
+# (env|envFrom): Matches either "env" or "envFrom".
+# :: Matches a colon.
+# -A 1000: Prints 1000 lines after each matching line.
+# ([A-Za-z0-9_]+): Captures one or more uppercase letters, lowercase letters, digits, or underscores.
+# \s*: Matches zero or more whitespace characters.
+# :: Matches a colon.
+# (.*)$: Captures everything after the colon until the end of the line.
+# \1=\2: Replaces the entire matched line with the content of the first captured group (\1), an equals sign, and the content of the second captured group (\2).
+
 }
 
 # Function to compare environment variables between two YAML files
