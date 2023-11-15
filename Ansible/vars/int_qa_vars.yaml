@@ -1,6 +1,6 @@
 dpath: "/home/teresol.admin/integration"
-file_name: "crm/dataaccessmsaccountsignaturedetail-crm.yaml"
-replace_string: "0.1.5-crm"
+file_name: "crm/coremsfile-crm.yaml"
+replace_string: "1.2.3-crm"
 
 
 

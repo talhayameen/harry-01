@@ -9,11 +9,16 @@ output_file="environment_variable_diff.txt"
 
 # Function to extract environment variables from YAML file
 extract_env_variables() {
+
     local yaml_file="$1"
+
     # Extract lines starting with '- env:' or '- envFrom:'
+
     grep -E '^\s+-\s+(env|envFrom):' "$yaml_file" -A 1000 | grep -E '^\s+-\s+[A-Za-z0-9_]+\s*:' | \
+    
     sed -E 's/^\s+-\s+([A-Za-z0-9_]+)\s*:(.*)$/\1=\2/'
 
+}
 # ^: Anchors the match to the beginning of a line.
 # \s+: Matches one or more whitespace characters.
 # -: Matches a hyphen character.
@@ -26,7 +31,6 @@ extract_env_variables() {
 # (.*)$: Captures everything after the colon until the end of the line.
 # \1=\2: Replaces the entire matched line with the content of the first captured group (\1), an equals sign, and the content of the second captured group (\2).
 
-}
 
 # Function to compare environment variables between two YAML files
 compare_yaml_files() {
