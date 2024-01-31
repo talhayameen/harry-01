@@ -1,6 +1,6 @@
 dpath: "/home/teresol/development"
-file_name: "crm/coreapiaccount-crm.yaml"
-replace_string: "1.8.6-crm"
+file_name: "crm/dataaccessmsexecutefundstransfer-crm.yaml"
+replace_string: "1.1.4-crm"
 
 
 #

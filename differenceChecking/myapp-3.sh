@@ -2,7 +2,7 @@
 
 # Define the folders
 production_folder="./pilot"
-disaster_recovery_folder="./production-dr"
+disaster_recovery_folder="./staging"
 
 # Define the output file
 output_file="environment_variable_diff.txt"
